@@ -164,7 +164,8 @@
 # define GPIO_SERVO_2			(1<<1)		/**< servo 2 output */
 # define GPIO_SERVO_3			(1<<2)		/**< servo 3 output */
 # define GPIO_SERVO_4			(1<<3)		/**< servo 4 output */
-
+# define GPIO_SERVO_5			(1<<4)		/**< servo 5 output */
+# define GPIO_SERVO_6			(1<<5)		/**< servo 6 output */
 /**
  * Device paths for things that support the GPIO ioctl protocol.
  */
