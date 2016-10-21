@@ -175,6 +175,11 @@ then
 				set AUTOCNF yes
 			fi
 		fi
+
+		if ver hwcmp NAYAN_FSC
+		then
+			set USE_IO no
+		fi
 	else
 		set USE_IO no
 	fi
