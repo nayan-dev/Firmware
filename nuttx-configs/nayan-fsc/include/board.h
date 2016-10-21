@@ -199,8 +199,8 @@
 /*
  * UARTs.
  */
-#define GPIO_USART1_RX	GPIO_USART1_RX_2
-#define GPIO_USART1_TX	GPIO_USART1_RX_2
+#define GPIO_USART1_RX	GPIO_USART1_RX_2		/* console in from MC */
+#define GPIO_USART1_TX	GPIO_USART1_TX_2
 
 #define GPIO_USART2_RX	GPIO_USART2_RX_2
 #define GPIO_USART2_TX	GPIO_USART2_TX_2
@@ -208,7 +208,7 @@
 #define GPIO_USART3_RX	GPIO_USART3_RX_3
 #define GPIO_USART3_TX	GPIO_USART3_TX_3
 
-#define GPIO_UART4_RX	GPIO_UART4_RX_1		/* console in from MC */
+#define GPIO_UART4_RX	GPIO_UART4_RX_1
 #define GPIO_UART4_TX	GPIO_UART4_TX_1
 
 /* UART8 has no alternate pin config */
