@@ -14,12 +14,12 @@ set(config_module_list
 	drivers/px4fmu
 	#drivers/px4io
 	drivers/boards/nayan-fsc
-	#drivers/rgbled
+	drivers/rgbled
 	#drivers/mpu6000
 	drivers/mpu9250
 	#drivers/lsm303d
 	#drivers/l3gd20
-	#drivers/hmc5883
+	drivers/hmc5883
 	drivers/ms5611
 	#drivers/mb12xx
 	#drivers/srf02
@@ -41,11 +41,11 @@ set(config_module_list
 	#drivers/px4flow
 	#drivers/oreoled
 	#drivers/vmount
-	#drivers/pwm_input
+	drivers/pwm_input
 	#drivers/camera_trigger
 	#drivers/bst
 	#drivers/snapdragon_rc_pwm
-	#drivers/lis3mdl
+	drivers/lis3mdl
 
 	#
 	# System commands
@@ -130,6 +130,7 @@ set(config_module_list
 	lib/mathlib
 	lib/mathlib/math/filter
 	lib/ecl
+	lib/rc
 	lib/external_lgpl
 	lib/geo
 	lib/geo_lookup
