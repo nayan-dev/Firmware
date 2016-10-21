@@ -171,6 +171,7 @@ __EXPORT int nsh_archinitialize(void)
 	px4_arch_configgpio(GPIO_ADC1_IN11);	/* FMU_AUX_ADC_2 */
 
 	/* configure the GPIO pins to outputs and keep them low */
+	px4_arch_configgpio(GPIO_SBUS_INV);
 	px4_arch_configgpio(GPIO_GPIO0_OUTPUT);
 	px4_arch_configgpio(GPIO_GPIO1_OUTPUT);
 	px4_arch_configgpio(GPIO_GPIO2_OUTPUT);
