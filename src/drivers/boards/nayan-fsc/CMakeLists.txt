@@ -36,6 +36,7 @@ px4_add_module(
 	SRCS
 		../common/board_name.c
 		../common/board_dma_alloc.c
+		nayanfsc_can.c
 		nayanfsc_init.c
 		nayanfsc_timer_config.c
 		nayanfsc_spi.c
