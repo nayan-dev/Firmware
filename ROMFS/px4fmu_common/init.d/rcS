@@ -332,7 +332,12 @@ then
 		unset HIL
 	else
 		unset HIL
-		gps start
+		if ver hwcmp NAYAN_FSC
+		then
+			gps start -d /dev/ttyS3 -s -i uart -p ubx
+		else
+			gps start
+		fi
 	fi
 
 	# waypoint storage
