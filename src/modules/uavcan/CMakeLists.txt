@@ -75,6 +75,8 @@ px4_add_module(
 		sensors/mag.cpp
 		sensors/baro.cpp
 		sensors/imu.cpp
+		sensors/rcin.cpp
+		esc_passthrough/esc_passthrough.cpp
 
 		# Sensors Pub
 		sensors_pub/sensor_pub.cpp

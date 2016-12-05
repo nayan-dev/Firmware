@@ -1,6 +1,6 @@
 /****************************************************************************
  *
- *   Copyright (c) 2016 Aarav Unmanned Systems Pvt. Ltd. All rights reserved.
+ *   Copyright (C) 2014 Aarav Unmanned Systems Pvt. Ltd. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
@@ -12,7 +12,7 @@
  *    notice, this list of conditions and the following disclaimer in
  *    the documentation and/or other materials provided with the
  *    distribution.
- * 3. Neither the name PX4 nor the names of its contributors may be
+ * 3. Neither the name AUS nor the names of its developers may be
  *    used to endorse or promote products derived from this software
  *    without specific prior written permission.
  *
@@ -33,6 +33,8 @@
 
 
 /**
+ * @file sensor_pub.hpp
+ *
  * @author Siddharth Bharat Purohit <sidbpurohit@gmail.com>
  */
 
@@ -42,11 +44,13 @@
 #include <uORB/topics/sensor_mag.h>
 #include <uORB/topics/sensor_gyro.h>
 #include <uORB/topics/sensor_accel.h>
+#include <uORB/topics/input_rc.h>
 #include <uavcan/uavcan.hpp>
 #include <uavcan/equipment/air_data/StaticPressure.hpp>
 #include <uavcan/equipment/air_data/StaticTemperature.hpp>
 #include <uavcan/equipment/ahrs/RawIMU.hpp>
 #include <uavcan/equipment/ahrs/MagneticFieldStrength.hpp>
+#include <uavcan/equipment/rc/Radioin.hpp>
 
 
 #define UAVCAN_SENSOR_TRANSFER_PRIORITY 6
@@ -71,7 +75,8 @@ private:
 	int _mag_sub = -1;
 	int _gyro_sub = -1;
 	int _accel_sub = -1;
-	bool	_task_should_exit = false;
+	int _rcin_sub = -1;
+	bool _task_should_exit = false;
 	int update();
 	static UavcanSensorPub	*_instance;			///< singleton pointer
 	/*
@@ -83,6 +88,7 @@ private:
 	uavcan::Publisher<uavcan::equipment::air_data::StaticTemperature>			_uavcan_pub_temperature;
 	uavcan::Publisher<uavcan::equipment::ahrs::MagneticFieldStrength>			_uavcan_pub_mag;
 	uavcan::Publisher<uavcan::equipment::ahrs::RawIMU>			_uavcan_pub_imu;
+	uavcan::Publisher<uavcan::equipment::rc::Radioin>			_uavcan_pub_rcin;
 	uavcan::TimerEventForwarder<TimerCbBinder>				_orb_timer;
 
 };

@@ -12,7 +12,7 @@
  *    notice, this list of conditions and the following disclaimer in
  *    the documentation and/or other materials provided with the
  *    distribution.
- * 3. Neither the name PX4 nor the names of its contributors may be
+ * 3. Neither the name AUS nor the names of its developers may be
  *    used to endorse or promote products derived from this software
  *    without specific prior written permission.
  *
@@ -45,6 +45,7 @@
 #include <px4_tasks.h>
 #include <px4_posix.h>
 #include <px4_time.h>
+
 UavcanSensorPub *UavcanSensorPub::_instance;
 
 UavcanSensorPub::UavcanSensorPub(uavcan::INode &node) :
@@ -53,12 +54,14 @@ UavcanSensorPub::UavcanSensorPub(uavcan::INode &node) :
 	_uavcan_pub_temperature(node),
 	_uavcan_pub_mag(node),
 	_uavcan_pub_imu(node),
+	_uavcan_pub_rcin(node),
 	_orb_timer(node)
 {
 	_uavcan_pub_pressure.setPriority(UAVCAN_SENSOR_TRANSFER_PRIORITY);
 	_uavcan_pub_temperature.setPriority(UAVCAN_SENSOR_TRANSFER_PRIORITY);
 	_uavcan_pub_mag.setPriority(UAVCAN_SENSOR_TRANSFER_PRIORITY);
 	_uavcan_pub_imu.setPriority(UAVCAN_SENSOR_TRANSFER_PRIORITY);
+	_uavcan_pub_rcin.setPriority(UAVCAN_SENSOR_TRANSFER_PRIORITY);
 }
 
 UavcanSensorPub::~UavcanSensorPub()
@@ -72,11 +75,13 @@ int UavcanSensorPub::update()
 	//bool gps_updated = false;
 	bool baro_updated = false;
 	bool mag_updated = false;
+	bool rcin_updated = false;
 
 	_baro_sub = orb_subscribe(ORB_ID(sensor_baro));
 	_mag_sub = orb_subscribe(ORB_ID(sensor_mag));
 	_gyro_sub = orb_subscribe(ORB_ID(sensor_gyro));
 	_accel_sub = orb_subscribe(ORB_ID(sensor_accel));
+	_rcin_sub = orb_subscribe(ORB_ID(input_rc));
 
 	fds.fd = _gyro_sub;
 	fds.events = POLLIN;
@@ -84,6 +89,7 @@ int UavcanSensorPub::update()
 	sensor_gyro_s gyro = {};
 	sensor_accel_s accel = {};
 	sensor_mag_s mag = {};
+	input_rc_s rcin = {};
 
 	while (!_task_should_exit) {
 		int ret = px4_poll(&fds, 1, 1000);
@@ -158,6 +164,17 @@ int UavcanSensorPub::update()
 			press_msg.static_pressure = baro.pressure * 100.0f;
 			(void)_uavcan_pub_pressure.broadcast(press_msg);
 			(void)_uavcan_pub_temperature.broadcast(temp_msg);
+		}
+
+		orb_check(_rcin_sub, &rcin_updated);
+
+		if (rcin_updated) {
+			orb_copy(ORB_ID(input_rc), _rcin_sub, &rcin);
+			uavcan::equipment::rc::Radioin rcin_msg;
+			for(int i = 0; i < rcin.channel_count; i++) {
+				rcin_msg.channel.push_back(static_cast<int>(rcin.values[i]));
+			}
+			(void)_uavcan_pub_rcin.broadcast(rcin_msg);
 		}
 	}
 
