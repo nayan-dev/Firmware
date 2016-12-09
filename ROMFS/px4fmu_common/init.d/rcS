@@ -867,6 +867,28 @@ then
 		param set MAV_TYPE 10
 	fi
 
+	if ver hwcmp NAYAN_FSC
+	then
+#		commander stop
+#		if mc_att_control stop
+#		then
+#		fi
+#		pwm failsafe -c 1234 -p 900
+#		pwm disarmed -c 1234 -p 900
+#
+#		# Arm straightaway.
+#		pwm arm
+#		# Use 400 Hz PWM on all channels.
+#		pwm rate -a -r 400
+		if uavcan sensor_pub
+		then
+		fi
+
+		if uavcan esc_passthrough
+		then
+		fi
+	fi
+
 	#
 	# For snapdragon, we need a passthrough mode
 	# Do not run any mavlink instances since we need the serial port for

@@ -46,7 +46,7 @@ set(config_module_list
 	drivers/pwm_input
 	#drivers/camera_trigger
 	#drivers/bst
-	#drivers/snapdragon_rc_pwm
+	drivers/snapdragon_rc_pwm
 	drivers/lis3mdl
 
 	#
@@ -55,7 +55,7 @@ set(config_module_list
 	systemcmds/bl_update
 	systemcmds/config
 	systemcmds/dumpfile
-	#systemcmds/esc_calib
+	systemcmds/esc_calib
 	systemcmds/mixer
 	#systemcmds/motor_ramp
 	systemcmds/mtd

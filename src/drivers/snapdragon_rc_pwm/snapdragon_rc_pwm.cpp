@@ -212,9 +212,15 @@ void set_pwm_output(mavlink_actuator_control_target_t *actuator_controls)
 		for (unsigned i = 0; i < PWM_OUTPUT_MAX_CHANNELS; i++) {
 			int ret = ::ioctl(_pwm_fd, PWM_SERVO_SET(i), _pwm_disarmed);
 
+			printf("PWM: %d\n", _pwm_disarmed);
+
 			if (ret != OK) {
 				PX4_ERR("PWM_SERVO_SET(%d)", i);
 			}
+
+			PX4_ERR("Sent PWM_SERVO_SET(%d)", i);
+			printf("PWM FD CB %d\n", _pwm_fd);
+
 		}
 
 	} else {
@@ -226,6 +232,8 @@ void set_pwm_output(mavlink_actuator_control_target_t *actuator_controls)
 				if (ret != OK) {
 					PX4_ERR("PWM_SERVO_SET(%d)", i);
 				}
+
+				PX4_ERR("Sent PWM_SERVO_SET(%d)", i);
 			}
 		}
 	}

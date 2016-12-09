@@ -46,6 +46,7 @@
 
 #include <uavcan/uavcan.hpp>
 #include <uavcan/equipment/esc/RawCommand.hpp>
+#include <uavcan/equipment/esc/OBCRawActuator.hpp>
 #include <uavcan/equipment/esc/Status.hpp>
 #include <systemlib/perf_counter.h>
 #include <uORB/topics/esc_status.h>
@@ -99,14 +100,15 @@ private:
 	 */
 	uavcan::MonotonicTime							_prev_cmd_pub;   ///< rate limiting
 	uavcan::INode								&_node;
-	uavcan::Publisher<uavcan::equipment::esc::RawCommand>			_uavcan_pub_raw_cmd;
+	//uavcan::Publisher<uavcan::equipment::esc::RawCommand>			_uavcan_pub_raw_cmd;
+	uavcan::Publisher<uavcan::equipment::esc::OBCRawActuator>			_uavcan_pub_raw_cmd;
 	uavcan::Subscriber<uavcan::equipment::esc::Status, StatusCbBinder>	_uavcan_sub_status;
 	uavcan::TimerEventForwarder<TimerCbBinder>				_orb_timer;
 
 	/*
 	 * ESC states
 	 */
-	uint32_t 			_armed_mask = 0;
+	uint32_t 			_armed_mask = 0, _pwm_min, _pwm_max;
 
 	/*
 	 * Perf counters

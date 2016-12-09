@@ -76,6 +76,10 @@ int UavcanEscController::init()
 		return res;
 	}
 
+	param_get(param_find("PWM_MIN"),&_pwm_min);
+
+	param_get(param_find("PWM_MAX"),&_pwm_max);
+
 	// ESC status will be relayed from UAVCAN bus into ORB at this rate
 	_orb_timer.setCallback(TimerCbBinder(this, &UavcanEscController::orb_pub_timer_cb));
 	_orb_timer.startPeriodic(uavcan::MonotonicDuration::fromMSec(1000 / ESC_STATUS_UPDATE_RATE_HZ));
@@ -107,35 +111,47 @@ void UavcanEscController::update_outputs(float *outputs, unsigned num_outputs)
 	 * Fill the command message
 	 * If unarmed, we publish an empty message anyway
 	 */
-	uavcan::equipment::esc::RawCommand msg;
-
-	static const int cmd_max = uavcan::equipment::esc::RawCommand::FieldTypes::cmd::RawValueType::max();
-	const float cmd_min = _run_at_idle_throttle_when_armed ? 1.0F : 0.0F;
+	uavcan::equipment::esc::OBCRawActuator msg;
 
 	for (unsigned i = 0; i < num_outputs; i++) {
 		if (_armed_mask & MOTOR_BIT(i)) {
-			float scaled = (outputs[i] + 1.0F) * 0.5F * cmd_max;
-
-			// trim negative values back to minimum
-			if (scaled < cmd_min) {
-				scaled = cmd_min;
-				perf_count(_perfcnt_scaling_error);
-			}
-
-			if (scaled > cmd_max) {
-				scaled = cmd_max;
-				perf_count(_perfcnt_scaling_error);
-			}
-
-			msg.cmd.push_back(static_cast<int>(scaled));
-
-			_esc_status.esc[i].esc_setpoint_raw = abs(static_cast<int>(scaled));
-
+			msg.act_ctrl.push_back(static_cast<int>(outputs[i]));
 		} else {
-			msg.cmd.push_back(static_cast<unsigned>(0));
+			msg.act_ctrl.push_back(static_cast<unsigned>(0));
 		}
 	}
-
+//	uavcan::equipment::esc::RawCommand msg;
+//
+//	for (unsigned i = 0; i < num_outputs; i++) {
+//		if (_armed_mask & MOTOR_BIT(i)) {
+//
+//			float control_value = outputs[i];
+//
+//			/* check for invalid / disabled channels */
+//			if (!isfinite(control_value)) {
+//				control_value = 0;
+//				continue;
+//			}
+//
+//			int scaled = control_value * (_pwm_max - _pwm_min) / 2 + (_pwm_max + _pwm_min) / 2;
+//
+//			/* last line of defense against invalid inputs */
+//			if (scaled < _pwm_min) {
+//				scaled = _pwm_min;
+//
+//			} else if (scaled > _pwm_max) {
+//				scaled = _pwm_max;
+//			}
+//
+//			msg.cmd.push_back(static_cast<int>(scaled));
+//
+//			_esc_status.esc[i].esc_setpoint_raw = abs(static_cast<int>(scaled));
+//
+//		} else {
+//			msg.cmd.push_back(static_cast<unsigned>(0));
+//		}
+//	}
+//
 	/*
 	 * Publish the command message to the bus
 	 * Note that for a quadrotor it takes one CAN frame

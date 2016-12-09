@@ -1386,6 +1386,21 @@ int uavcan_main(int argc, char *argv[])
 		}
 		::exit(0);
 	}
+
+	if (!std::strcmp(argv[1], "esc_passthrough")) {
+
+		if (UavcanESCPassthrough::instance() != nullptr) {
+			PX4_WARN("already running");
+			::exit(1);
+		}
+
+		if (OK != UavcanESCPassthrough::start(inst->get_node())) {
+
+			PX4_WARN("start failed");
+			::exit(1);
+		}
+		::exit(0);
+	}
 	/*
 	 * Parameter setting commands
 	 *

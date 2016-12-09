@@ -1127,7 +1127,7 @@ PX4FMU::cycle()
 
 			/* output to the servos */
 			for (size_t i = 0; i < num_outputs; i++) {
-				pwm_output_set(i, pwm_limited[i]);
+				//pwm_output_set(i, pwm_limited[i]);
 			}
 
 			publish_pwm_outputs(pwm_limited, num_outputs);

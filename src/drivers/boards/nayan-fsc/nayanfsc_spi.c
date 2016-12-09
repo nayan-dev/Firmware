@@ -120,13 +120,14 @@ __EXPORT uint8_t stm32_spi1status(FAR struct spi_dev_s *dev, enum spi_dev_e devi
 __EXPORT void stm32_spi4select(FAR struct spi_dev_s *dev, enum spi_dev_e devid, bool selected)
 {
 
-	if(devid == PX4_SPIDEV_BARO) {
-			/* Making sure the other peripherals are not selected */
-			px4_arch_gpiowrite(GPIO_SPI_CS_BARO, !selected);
-			px4_arch_gpiowrite(GPIO_SPI_CS_FRAM, 1);
-	}else {
-			px4_arch_gpiowrite(GPIO_SPI_CS_BARO, 1);
-			px4_arch_gpiowrite(GPIO_SPI_CS_FRAM, !selected);
+	if (devid == PX4_SPIDEV_BARO) {
+		/* Making sure the other peripherals are not selected */
+		px4_arch_gpiowrite(GPIO_SPI_CS_BARO, !selected);
+		px4_arch_gpiowrite(GPIO_SPI_CS_FRAM, 1);
+
+	} else {
+		px4_arch_gpiowrite(GPIO_SPI_CS_BARO, 1);
+		px4_arch_gpiowrite(GPIO_SPI_CS_FRAM, !selected);
 	}
 }
 
@@ -149,6 +150,7 @@ __EXPORT void stm32_spi2select(FAR struct spi_dev_s *dev, enum spi_dev_e devid, 
 //		px4_arch_gpiowrite(GPIO_SPI_CS_EXT2, 1);
 //		px4_arch_gpiowrite(GPIO_SPI_CS_EXT3, 1);
 		break;
+
 //
 //	case PX4_SPIDEV_EXT1:
 //		/* Making sure the other peripherals are not selected */

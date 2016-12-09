@@ -1,6 +1,6 @@
 /****************************************************************************
  *
- *   Copyright (c) 2016 Aarav Unmanned Systems Pvt. Ltd. All rights reserved.
+ *   Copyright (C) 2014 Aarav Unmanned Systems Pvt. Ltd. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
@@ -32,69 +32,51 @@
  ****************************************************************************/
 
 /**
+ * @file sensor_pub.cpp
+ *
  * @author Siddharth Bharat Purohit <sidbpurohit@gmail.com>
  */
 
 #pragma once
 
+#include <stdint.h>
+
 #include "sensor_bridge.hpp"
+#include <px4_tasks.h>
+#include <px4_getopt.h>
+#include <px4_posix.h>
+#include <errno.h>
+#include <string.h>
+#include <termios.h>
+
+#include <uavcan/uavcan.hpp>
+#include <drivers/drv_rc_input.h>
 #include <drivers/drv_hrt.h>
-#include <systemlib/err.h>
-#include <drivers/drv_gyro.h>
-#include <drivers/drv_accel.h>
+#include <uavcan/equipment/rc/Radioin.hpp>
 
-#include <uavcan/equipment/ahrs/RawIMU.hpp>
-class UavcanGyro;
 
-class UavcanIMUBridge : public UavcanCDevSensorBridgeBase
+class UavcanRCinBridge : public UavcanCDevSensorBridgeBase
 {
 public:
 	static const char *const NAME;
 
-	UavcanIMUBridge(uavcan::INode &node);
+	UavcanRCinBridge(uavcan::INode &node);
 
 	const char *get_name() const override { return NAME; }
 
 	int init() override;
-	friend class UavcanGyro;
+
+private:
 	ssize_t	read(struct file *filp, char *buffer, size_t buflen);
 	int ioctl(struct file *filp, int cmd, unsigned long arg) override;
 
-private:
-	UavcanGyro *_gyro;
+	void rcin_sub_cb(const uavcan::ReceivedDataStructure<uavcan::equipment::rc::Radioin> &msg);
 
-	void imu_sub_cb(const uavcan::ReceivedDataStructure<uavcan::equipment::ahrs::RawIMU> &msg);
+	typedef uavcan::MethodBinder < UavcanRCinBridge *,
+		void (UavcanRCinBridge::*)
+		(const uavcan::ReceivedDataStructure<uavcan::equipment::rc::Radioin> &) >
+		RCinCbBinder;
 
-	typedef uavcan::MethodBinder < UavcanIMUBridge *,
-		void (UavcanIMUBridge::*)
-		(const uavcan::ReceivedDataStructure<uavcan::equipment::ahrs::RawIMU> &) >
-		IMUCbBinder;
-
-	uavcan::Subscriber<uavcan::equipment::ahrs::RawIMU, IMUCbBinder> _sub_imu;
-	struct accel_calibration_s _accel_scale = {};
-
-	accel_report _accel_report =  {};
-};
-
-
-class UavcanGyro : public UavcanCDevSensorBridgeBase
-{
-public:
-	static const char *const NAME;
-
-	UavcanGyro(uavcan::INode &node, UavcanIMUBridge *parent);
-
-	const char *get_name() const override { return NAME; }
-
-	int init() override;
-	friend class UavcanIMUBridge;
-
-private:
-	UavcanIMUBridge *_parent;
-	ssize_t	read(struct file *filp, char *buffer, size_t buflen);
-	int ioctl(struct file *filp, int cmd, unsigned long arg) override;
-	void publish_gyro(const uavcan::ReceivedDataStructure<uavcan::equipment::ahrs::RawIMU> &msg);
-
-	struct gyro_calibration_s _gyro_scale = {};
-	gyro_report _gyro_report =  {};
+	uavcan::Subscriber<uavcan::equipment::rc::Radioin, RCinCbBinder> _sub_rcin;
+	rc_input_values _report =  {};
 };

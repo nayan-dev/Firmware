@@ -57,7 +57,7 @@ px4_add_module(
 	MODULE modules__uavcan
 	MAIN uavcan
 	STACK_MAIN 3200
-	STACK_MAX 3500
+	STACK_MAX 6500
 	COMPILE_FLAGS
 	SRCS
 		# Main

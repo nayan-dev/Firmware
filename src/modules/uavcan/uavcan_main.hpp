@@ -68,6 +68,7 @@
 #include "uavcan_servers.hpp"
 #include "allocator.hpp"
 #include "sensors_pub/sensor_pub.hpp"
+#include "esc_passthrough/esc_passthrough.hpp"
 
 #define NUM_ACTUATOR_CONTROL_GROUPS_UAVCAN	4
 
