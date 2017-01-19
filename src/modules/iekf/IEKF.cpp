@@ -279,11 +279,10 @@ void IEKF::callbackImu(const sensor_combined_s *msg)
 			correctLand(msg->timestamp);
 		}
 
-		int32_t overrunMillis = (ros::Time::now().toNSec() - deadline) / 1e6;
-
+		float overrunMillis = int32_t(ros::Time::now().toNSec() - deadline) / 1.0e6f;
 		if (overrunMillis > 1) {
-			ROS_WARN("correction deadline exceeded by %d msec",
-				 overrunMillis);
+			ROS_WARN("correction deadline exceeded by %10.4f msec",
+				 double(overrunMillis));
 		}
 
 		_imuLowRateIndex += 1;
