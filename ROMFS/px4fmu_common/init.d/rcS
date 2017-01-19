@@ -661,6 +661,12 @@ then
 		px4flow start &
 	fi
 
+	if ver hwcmp NAYAN_MST
+	then
+		# Check for flow sensor - as it is a background task, launch it last
+		px4flow start &
+	fi
+
 	if ver hwcmp MINDPX_V2
 	then
 		#mindxp also need flow
