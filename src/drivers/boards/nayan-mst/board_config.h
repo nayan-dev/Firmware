@@ -34,7 +34,7 @@
 /**
  * @file board_config.h
  *
- * Nayan FSC internal definitions
+ * Nayan Master internal definitions
  */
 
 #pragma once
@@ -234,7 +234,7 @@ __BEGIN_DECLS
 #define PWMIN_TIMER_CHANNEL	2
 #define GPIO_PWM_IN		GPIO_TIM4_CH2IN_2
 
-#define BOARD_NAME "NayanFSC"
+#define BOARD_NAME "NayanMST"
 
 /* By Providing BOARD_ADC_USB_CONNECTED this board support the ADC
  * system_power interface, and therefore provides the true logic

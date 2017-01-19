@@ -176,7 +176,7 @@ then
 			fi
 		fi
 
-		if ver hwcmp NAYAN_FSC
+		if ver hwcmp NAYAN_MST
 		then
 			set USE_IO no
 		fi
@@ -332,7 +332,7 @@ then
 		unset HIL
 	else
 		unset HIL
-		if ver hwcmp NAYAN_FSC
+		if ver hwcmp NAYAN_MST
 		then
 			gps start -d /dev/ttyS3 -s -i uart -p ubx
 		else
@@ -534,7 +534,7 @@ then
 	if ver hwcmp PX4FMU_V1
 	then
 	else
-		if ver hwcmp NAYAN_FSC
+		if ver hwcmp NAYAN_MST
 		then
 		else
 			# XXX We need a better way for runtime eval of shell variables,
@@ -656,12 +656,6 @@ then
 	fi
 
 	if ver hwcmp PX4FMU_V2
-	then
-		# Check for flow sensor - as it is a background task, launch it last
-		px4flow start &
-	fi
-
-	if ver hwcmp NAYAN_MST
 	then
 		# Check for flow sensor - as it is a background task, launch it last
 		px4flow start &
@@ -873,7 +867,7 @@ then
 		param set MAV_TYPE 10
 	fi
 
-	if ver hwcmp NAYAN_FSC
+	if ver hwcmp NAYAN_MST
 	then
 #		commander stop
 #		if mc_att_control stop

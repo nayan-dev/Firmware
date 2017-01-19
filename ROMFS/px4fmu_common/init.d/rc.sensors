@@ -219,7 +219,7 @@ then
 	fi
 fi
 
-if ver hwcmp NAYAN_FSC
+if ver hwcmp NAYAN_MST
 then
 	# External I2C bus
 	if hmc5883 -C -T -X start

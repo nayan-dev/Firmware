@@ -827,7 +827,7 @@ param_load_default(void)
 	return 0;
 }
 
-#if defined (CONFIG_ARCH_BOARD_PX4FMU_V4) ||  defined (CONFIG_ARCH_BOARD_NAYAN_FSC)
+#if defined (CONFIG_ARCH_BOARD_PX4FMU_V4) ||  defined (CONFIG_ARCH_BOARD_NAYAN_MST)
 //struct spi_dev_s *dev = nullptr;
 irqstate_t irq_state;
 #endif
@@ -836,7 +836,7 @@ static void
 param_bus_lock(bool lock)
 {
 
-#if defined (CONFIG_ARCH_BOARD_PX4FMU_V4) || defined (CONFIG_ARCH_BOARD_NAYAN_FSC)
+#if defined (CONFIG_ARCH_BOARD_PX4FMU_V4) || defined (CONFIG_ARCH_BOARD_NAYAN_MST)
 	// FMUv4 has baro and FRAM on the same bus,
 	// as this offers on average a 100% silent
 	// bus for the baro operation

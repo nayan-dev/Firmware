@@ -158,7 +158,7 @@
 #endif
 
 
-#ifdef CONFIG_ARCH_BOARD_NAYAN_FSC
+#ifdef CONFIG_ARCH_BOARD_NAYAN_MST
 
 # define GPIO_SERVO_1			(1<<0)		/**< servo 1 output */
 # define GPIO_SERVO_2			(1<<1)		/**< servo 2 output */
@@ -199,7 +199,7 @@
 	!defined(CONFIG_ARCH_BOARD_MINDPX_V2) && \
 	!defined(CONFIG_ARCH_BOARD_PX4FMU_V4) && !defined(CONFIG_ARCH_BOARD_SITL) && \
 	!defined(CONFIG_ARCH_BOARD_TAP_V1) && !defined(CONFIG_ARCH_BOARD_ASC_V1) && \
-	!defined(CONFIG_ARCH_BOARD_CRAZYFLIE) && !defined(CONFIG_ARCH_BOARD_NAYAN_FSC)
+	!defined(CONFIG_ARCH_BOARD_CRAZYFLIE) && !defined(CONFIG_ARCH_BOARD_NAYAN_MST)
 # error No CONFIG_ARCH_BOARD_xxxx set
 #endif
 /*

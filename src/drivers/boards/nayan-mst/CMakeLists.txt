@@ -31,18 +31,18 @@
 #
 ############################################################################
 px4_add_module(
-	MODULE drivers__boards__nayan-fsc
+	MODULE drivers__boards__nayan-mst
 	COMPILE_FLAGS
 	SRCS
-		../common/board_name.c
-		../common/board_dma_alloc.c
-		nayanfsc_can.c
-		nayanfsc_init.c
-		nayanfsc_timer_config.c
-		nayanfsc_spi.c
-		nayanfsc_usb.c
-		nayanfsc_led.c
+	../common/board_name.c
+	../common/board_dma_alloc.c
+	nayanmst_can.c
+	nayanmst_init.c
+	nayanmst_timer_config.c
+	nayanmst_spi.c
+	nayanmst_usb.c
+	nayanmst_led.c
 	DEPENDS
-		platforms__common
-	)
+	platforms__common
+)
 # vim: set noet ft=cmake fenc=utf-8 ff=unix :

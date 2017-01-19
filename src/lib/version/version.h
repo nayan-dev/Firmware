@@ -65,8 +65,8 @@ __END_DECLS
 #  define	HW_ARCH "BEBOP"
 #elif defined(CONFIG_ARCH_BOARD_CRAZYFLIE)
 #  define HW_ARCH "CRAZYFLIE"
-#elif defined(CONFIG_ARCH_BOARD_NAYAN_FSC)
-#  define HW_ARCH "NAYAN_FSC"
+#elif defined(CONFIG_ARCH_BOARD_NAYAN_MST)
+#  define HW_ARCH "NAYAN_MST"
 #else
 #define HW_ARCH (board_name())
 #endif

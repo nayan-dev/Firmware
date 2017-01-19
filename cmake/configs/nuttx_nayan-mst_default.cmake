@@ -15,7 +15,7 @@ set(config_module_list
 	drivers/led
 	drivers/px4fmu
 	#drivers/px4io
-	drivers/boards/nayan-fsc
+	drivers/boards/nayan-mst
 	drivers/rgbled
 	#drivers/mpu6000
 	drivers/mpu9250
@@ -26,7 +26,7 @@ set(config_module_list
 	#drivers/mb12xx
 	#drivers/srf02
 	#drivers/sf0x
-	#drivers/ll40ls
+	drivers/ll40ls
 	#drivers/trone
 	drivers/gps
 	drivers/pwm_out_sim
@@ -40,7 +40,7 @@ set(config_module_list
 	#drivers/frsky_telemetry
 	modules/sensors
 	#drivers/mkblctrl
-	#drivers/px4flow
+	drivers/px4flow
 	#drivers/oreoled
 	#drivers/vmount
 	drivers/pwm_input
