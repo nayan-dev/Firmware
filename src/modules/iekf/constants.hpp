@@ -233,10 +233,10 @@ const float process_noise_sigma_z = 0; // (m) / sqrt(s)
 const float process_noise_sigma_vz = 1e-2; // (m/s) / sqrt(s)
 const float process_noise_sigma_rot = 0; // (rad) / sqrt(s)
 
-const float gps_xy_sigma_rw = 5e-1f; // m / sqrt(s)
-const float gps_vxy_sigma_rw = 5e-2f; // (m/s) / sqrt(s)
-const float gps_z_sigma_rw = 2e0f; // m / sqrt(s)
-const float gps_vz_sigma_rw = 1e0f; // (m/s) / sqrt(s)
+const float gps_xy_sigma_rw = 2e0f; // m / sqrt(s)
+const float gps_z_sigma_rw = 10e0f; // m / sqrt(s)
+const float gps_vxy_sigma_rw = 2e-1f; // (m/s) / sqrt(s)
+const float gps_vz_sigma_rw = 4e-1f; // (m/s) / sqrt(s)
 
 // artifical landed measurement of velocity and agl
 const float land_sigma_vxy = 1e-2f; // m/s
