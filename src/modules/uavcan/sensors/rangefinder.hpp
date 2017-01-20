@@ -1,7 +1,6 @@
 /****************************************************************************
  *
- *   Copyright (c) 2013 PX4 Development Team. All rights reserved.
- *   Author: Anton Babushkin <anton.babushkin@me.com>
+ *   Copyright (c) 2014, 2015 PX4 Development Team. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
@@ -33,44 +32,44 @@
  ****************************************************************************/
 
 /**
- * @file version.h
- *
- * Tools for system version detection.
- *
- * @author Anton Babushkin <anton.babushkin@me.com>
+ * @author Pavel Kirienko <pavel.kirienko@gmail.com>
  */
 
-#ifndef VERSION_H_
-#define VERSION_H_
+#pragma once
 
-/* The preferred method for publishing a board name up is to
- * provide board_name()
- *
- */
-__BEGIN_DECLS
+#include "sensor_bridge.hpp"
+#include <drivers/drv_range_finder.h>
+#include <drivers/device/ringbuffer.h>
 
-__EXPORT const char *board_name(void);
+#include <uORB/topics/distance_sensor.h>
 
-__END_DECLS
+#include <uavcan/equipment/range_sensor/Measurement.hpp>
 
-#if defined(CONFIG_ARCH_BOARD_SITL)
-#  define	HW_ARCH "SITL"
-#elif defined(CONFIG_ARCH_BOARD_EAGLE)
-#  define	HW_ARCH "EAGLE"
-#elif defined(CONFIG_ARCH_BOARD_EXCELSIOR)
-#  define HW_ARCH "EXCELSIOR"
-#elif defined(CONFIG_ARCH_BOARD_RPI)
-#  define	HW_ARCH "RPI"
-#elif defined(CONFIG_ARCH_BOARD_BEBOP)
-#  define	HW_ARCH "BEBOP"
-#elif defined(CONFIG_ARCH_BOARD_CRAZYFLIE)
-#  define HW_ARCH "CRAZYFLIE"
-#elif defined(CONFIG_ARCH_BOARD_NAYAN_MST)
-#  define HW_ARCH "NAYAN_MST"
-#elif defined(CONFIG_ARCH_BOARD_NAYAN_SLV)
-#  define HW_ARCH "NAYAN_SLV"
-#else
-#define HW_ARCH (board_name())
-#endif
+class RingBuffer;
 
-#endif /* VERSION_H_ */
+class UavcanRangeFinderBridge : public UavcanCDevSensorBridgeBase
+{
+public:
+	static const char *const NAME;
+
+	UavcanRangeFinderBridge(uavcan::INode &node);
+
+	const char *get_name() const override { return NAME; }
+
+	int init() override;
+
+private:
+	ssize_t read(struct file *filp, char *buffer, size_t buflen);
+	int ioctl(struct file *filp, int cmd, unsigned long arg) override;
+
+	void range_finder_sub_cb(const uavcan::ReceivedDataStructure<uavcan::equipment::range_sensor::Measurement> &msg);
+
+	typedef uavcan::MethodBinder < UavcanRangeFinderBridge *,
+		void (UavcanRangeFinderBridge::*)
+		(const uavcan::ReceivedDataStructure<uavcan::equipment::range_sensor::Measurement> &) >
+		RangeFinderCbBinder;
+
+	uavcan::Subscriber<uavcan::equipment::range_sensor::Measurement, RangeFinderCbBinder> _sub_range_finder_data;
+
+	ringbuffer::RingBuffer _reports;
+};

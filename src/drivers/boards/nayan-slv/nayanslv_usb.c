@@ -32,7 +32,7 @@
  ****************************************************************************/
 
 /**
- * @file nayanmst_usb.c
+ * @file nayanslv_usb.c
  *
  * Board-specific USB functions.
  */

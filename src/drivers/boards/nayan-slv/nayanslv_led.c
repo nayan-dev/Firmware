@@ -1,7 +1,6 @@
 /****************************************************************************
  *
  *   Copyright (c) 2013 PX4 Development Team. All rights reserved.
- *   Author: Anton Babushkin <anton.babushkin@me.com>
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
@@ -33,44 +32,65 @@
  ****************************************************************************/
 
 /**
- * @file version.h
+ * @file px4fmu2_led.c
  *
- * Tools for system version detection.
- *
- * @author Anton Babushkin <anton.babushkin@me.com>
+ * PX4FMU LED backend.
  */
 
-#ifndef VERSION_H_
-#define VERSION_H_
+#include <px4_config.h>
 
-/* The preferred method for publishing a board name up is to
- * provide board_name()
- *
+#include <stdbool.h>
+
+#include "stm32.h"
+#include "board_config.h"
+
+#include <arch/board/board.h>
+
+/*
+ * Ideally we'd be able to get these from up_internal.h,
+ * but since we want to be able to disable the NuttX use
+ * of leds for system indication at will and there is no
+ * separate switch, we need to build independent of the
+ * CONFIG_ARCH_LEDS configuration switch.
  */
 __BEGIN_DECLS
-
-__EXPORT const char *board_name(void);
-
+extern void led_init(void);
+extern void led_on(int led);
+extern void led_off(int led);
+extern void led_toggle(int led);
 __END_DECLS
 
-#if defined(CONFIG_ARCH_BOARD_SITL)
-#  define	HW_ARCH "SITL"
-#elif defined(CONFIG_ARCH_BOARD_EAGLE)
-#  define	HW_ARCH "EAGLE"
-#elif defined(CONFIG_ARCH_BOARD_EXCELSIOR)
-#  define HW_ARCH "EXCELSIOR"
-#elif defined(CONFIG_ARCH_BOARD_RPI)
-#  define	HW_ARCH "RPI"
-#elif defined(CONFIG_ARCH_BOARD_BEBOP)
-#  define	HW_ARCH "BEBOP"
-#elif defined(CONFIG_ARCH_BOARD_CRAZYFLIE)
-#  define HW_ARCH "CRAZYFLIE"
-#elif defined(CONFIG_ARCH_BOARD_NAYAN_MST)
-#  define HW_ARCH "NAYAN_MST"
-#elif defined(CONFIG_ARCH_BOARD_NAYAN_SLV)
-#  define HW_ARCH "NAYAN_SLV"
-#else
-#define HW_ARCH (board_name())
-#endif
+__EXPORT void led_init()
+{
+	/* Configure LED1 GPIO for output */
 
-#endif /* VERSION_H_ */
+	px4_arch_configgpio(GPIO_LED1);
+}
+
+__EXPORT void led_on(int led)
+{
+	if (led == 1) {
+		/* Pull down to switch on */
+		px4_arch_gpiowrite(GPIO_LED1, true);
+	}
+}
+
+__EXPORT void led_off(int led)
+{
+	if (led == 1) {
+		/* Pull up to switch off */
+		px4_arch_gpiowrite(GPIO_LED1, false);
+	}
+}
+
+__EXPORT void led_toggle(int led)
+{
+	if (led == 1) {
+		if (px4_arch_gpioread(GPIO_LED1)) {
+			px4_arch_gpiowrite(GPIO_LED1, false);
+
+		} else {
+			px4_arch_gpiowrite(GPIO_LED1, true);
+		}
+	}
+}

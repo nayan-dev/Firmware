@@ -180,6 +180,11 @@ then
 		then
 			set USE_IO no
 		fi
+
+		if ver hwcmp NAYAN_SLV
+		then
+			set USE_IO no
+		fi
 	else
 		set USE_IO no
 	fi
@@ -333,6 +338,9 @@ then
 	else
 		unset HIL
 		if ver hwcmp NAYAN_MST
+		then
+			gps start -d /dev/ttyS3 -s -i uart -p ubx
+		elif ver hwcmp NAYAN_SLV
 		then
 			gps start -d /dev/ttyS3 -s -i uart -p ubx
 		else
@@ -535,6 +543,8 @@ then
 	then
 	else
 		if ver hwcmp NAYAN_MST
+		then
+		elif ver hwcmp NAYAN_SLV
 		then
 		else
 			# XXX We need a better way for runtime eval of shell variables,

@@ -1,12 +1,12 @@
 {
 	"board_id": 7,
-"magic": "NayanMST",
-"description": "Firmware for the Nayan Master board",
-"image": "",
+	"magic": "NayanMST",
+	"description": "Firmware for the Nayan Master board",
+	"image": "",
 	"build_time": 0,
-"summary": "NayanMST",
-"version": "0.1",
+	"summary": "NayanMST",
+	"version": "0.1",
 	"image_size": 0,
-"git_identity": "",
+	"git_identity": "",
 	"board_revision": 0
 }
