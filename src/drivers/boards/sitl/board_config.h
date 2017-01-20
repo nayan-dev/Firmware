@@ -1,7 +1,6 @@
-
 /****************************************************************************
  *
- *   Copyright (C) 2015 Mark Charlebois. All rights reserved.
+ *   Copyright (c) 2013, 2014 PX4 Development Team. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
@@ -33,24 +32,25 @@
  ****************************************************************************/
 
 /**
- * @file px4_config.h
-   Configuration flags used in code.
+ * @file board_config.h
+ *
+ * SITL internal definitions
  */
 
 #pragma once
 
-#if defined(__PX4_NUTTX)
+/*
+ * I2C busses
+ */
+#define PX4_I2C_BUS_ESC		1
+#define PX4_SIM_BUS_TEST	2
+#define PX4_I2C_BUS_EXPANSION	3
+#define PX4_I2C_BUS_LED		3
 
-#include <nuttx/config.h>
-#include <nuttx/arch.h>
-#include <board_config.h>
-#include "px4_micro_hal.h"
+#define PX4_I2C_OBDEV_LED	0x55
 
-#elif defined (__PX4_POSIX)
+#define STM32_SYSMEM_UID "SYSMEMID"
 
-#if !defined(__PX4_UNIT_TESTS)
-#  include <board_config.h>
-#else
 #define CONFIG_NFILE_STREAMS 1
 #define CONFIG_SCHED_WORKQUEUE 1
 #define CONFIG_SCHED_HPWORK 1
@@ -66,6 +66,3 @@
 
 #define CONFIG_SCHED_INSTRUMENTATION 1
 #define CONFIG_MAX_TASKS 32
-#endif
-
-#endif
