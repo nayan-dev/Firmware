@@ -52,29 +52,21 @@ void IEKF::correctMag(const sensor_combined_s *msg)
 			       msg->magnetometer_ga[0],
 			       msg->magnetometer_ga[1],
 			       msg->magnetometer_ga[2]).unit();
-	Vector3f yh = Dcmf(Eulerf(
-				   0,
-				   -1 * deg2radf * _magInclDeg, /* pitch down convention */
-				   deg2radf * _magDeclDeg)).T() * Vector3f(1, 0, 0);
-	Vector3f y = q_nb.conjugate(y_b);
-	Vector3f r = y - yh;
+	Vector3f y_n = q_nb.conjugate(y_b);
+	y_n(2) = 0;
+	Vector3f yh_n = Dcmf(Eulerf(
+				     0, 0, deg2radf * _magDeclDeg)).T() * Vector3f(1, 0, 0);
+	Vector<float, 1> r;
+	r(0) = asinf(y_n.cross(yh_n)(2)) / y_n.norm() / yh_n.norm();
+	//ROS_INFO("mag r: %10.4f\n", double(r(0)));
 
 	// define R
-	float covNE = mag_sigma_rw * mag_sigma_rw / dt;
 	Matrix<float, Y_mag::n, Y_mag::n> R;
-	R(Y_mag::mag_N, Y_mag::mag_N) = covNE;
-	R(Y_mag::mag_E, Y_mag::mag_E) = covNE;
-	R(Y_mag::mag_D, Y_mag::mag_D) = 1000 * covNE; // dont' want to correct in down
+	R(Y_mag::hdg, Y_mag::hdg) = mag_sigma_rw * mag_sigma_rw / dt;
 
 	// define H
 	Matrix<float, Y_mag::n, Xe::n> H;
-	Matrix3f tmp = yh.hat() * 2;
-
-	for (int i = 0; i < 3; i++) {
-		for (int j = 0; j < 3; j++) {
-			H(Y_mag::mag_N + i, Xe::rot_N + j) = tmp(i, j);
-		}
-	}
+	H(Y_mag::hdg, Xe::rot_D) = 1;
 
 	// kalman correction
 	_sensorMag.kalmanCorrectCond(_P, H, R, r, _dxe, _dP);

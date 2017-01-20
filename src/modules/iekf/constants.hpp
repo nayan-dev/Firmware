@@ -167,10 +167,10 @@ struct Y_baro {
  * frame.
  */
 struct Y_mag {
-	static const uint8_t mag_N = 0;
-	static const uint8_t mag_E = 1;
-	static const uint8_t mag_D = 2;
-	static const uint8_t n = 3;
+	static const uint8_t hdg = 0;
+	//static const uint8_t mag_E = 1;
+	//static const uint8_t mag_D = 2;
+	static const uint8_t n = 1;
 };
 
 /**
@@ -223,40 +223,46 @@ static const float BETA_TABLE[] = {
 
 // TODO these should all be rosparams eventually
 
-// guesses
-const float wind_correlation_time = 1000; // s
-const float flow_sigma_rw = 1e-2f; // rad/s / sqrt(s)
-
-const float process_noise_sigma_xy = 0; // (m) / sqrt(s)
-const float process_noise_sigma_vxy = 1e-1; // (m/s) / sqrt(s)
-const float process_noise_sigma_z = 0; // (m) / sqrt(s)
-const float process_noise_sigma_vz = 1e-2; // (m/s) / sqrt(s)
-const float process_noise_sigma_rot = 0; // (rad) / sqrt(s)
-
-const float gps_xy_sigma_rw = 2e0f; // m / sqrt(s)
-const float gps_z_sigma_rw = 10e0f; // m / sqrt(s)
-const float gps_vxy_sigma_rw = 2e-1f; // (m/s) / sqrt(s)
-const float gps_vz_sigma_rw = 4e-1f; // (m/s) / sqrt(s)
-
 // artifical landed measurement of velocity and agl
-const float land_sigma_vxy = 1e-2f; // m/s
-const float land_sigma_vz = 1e-2f; // m/s
-const float land_sigma_agl = 1e-2f; // m
+const float land_sigma_vxy = 1e0f; // m/s
+const float land_sigma_vz = 1e0f; // m/s
+const float land_sigma_agl = 1e0f; // m
 
 const float terrain_sigma_asl = 0; // (m/s) / sqrt(s)
 const float g = 9.81f;
 const float predict_g_thresh = 5;
 // don't predict if accel norm > than this
 
-//-----------------------------------------------------------------
+//#########################################################
+//
+// SITL
 
 #ifdef CONFIG_ARCH_BOARD_SITL
 
-// SITL
+//---------------------------------------------------------
+// guesses
+
+const float wind_correlation_time = 1000; // s
+const float flow_sigma_rw = 1e-2f; // rad/s / sqrt(s)
+
+const float process_noise_sigma_xy = 0; // (m) / sqrt(s)
+const float process_noise_sigma_vxy = 1e-1; // (m/s) / sqrt(s)
+const float process_noise_sigma_z = 0; // (m) / sqrt(s)
+const float process_noise_sigma_vz = 1e-1; // (m/s) / sqrt(s)
+const float process_noise_sigma_rot = 1e-3; // (rad) / sqrt(s)
+
+const float gps_xy_sigma_rw = 2e0f; // m / sqrt(s)
+const float gps_z_sigma_rw = 10e0f; // m / sqrt(s)
+const float gps_vxy_sigma_rw = 2e-1f; // (m/s) / sqrt(s)
+const float gps_vz_sigma_rw = 4e-1f; // (m/s) / sqrt(s)
+
+//---------------------------------------------------------
+// measured
+
 const float magDeclDeg = -0.745;
 // zurich decl output from sitl code is -0.745 deg, should be 2.05
 // possibly outdated mag model (2014)
-const float magInclDeg = 63.3f;
+//const float magInclDeg = 63.3f;
 
 const float gyro_sigma_rw = 4.6e-4f; // rad / sqrt(s)
 const float gyro_sigma_rrw = 4.2e-5f; // rad/s / sqrt(s)
@@ -276,11 +282,32 @@ const float mag_correlation_time = 500.0f; // s
 
 #else
 
-//-----------------------------------------------------------------
+//#########################################################
 // pixhawk
 
+//---------------------------------------------------------
+// guesses
+
+const float wind_correlation_time = 1000; // s
+const float flow_sigma_rw = 1e-2f; // rad/s / sqrt(s)
+
+const float process_noise_sigma_xy = 0; // (m) / sqrt(s)
+const float process_noise_sigma_vxy = 1e-1; // (m/s) / sqrt(s)
+const float process_noise_sigma_z = 0; // (m) / sqrt(s)
+const float process_noise_sigma_vz = 1e-1; // (m/s) / sqrt(s)
+const float process_noise_sigma_rot = 1e-3; // (rad) / sqrt(s)
+
+const float gps_xy_sigma_rw = 2e0f; // m / sqrt(s)
+const float gps_z_sigma_rw = 10e0f; // m / sqrt(s)
+const float gps_vxy_sigma_rw = 2e-1f; // (m/s) / sqrt(s)
+const float gps_vz_sigma_rw = 4e-1f; // (m/s) / sqrt(s)
+
+//---------------------------------------------------------
+// measured
+
+// magnetic field params for Indiana
 const float magDeclDeg = -4.7f;
-const float magInclDeg = 67.4f;
+//const float magInclDeg = 67.4f;
 
 const float gyro_sigma_rw = 9.8e-5f; // rad / sqrt(s)
 const float gyro_sigma_rrw = 1.2e-5f; // (rad/s) / sqrt(s)
@@ -294,8 +321,8 @@ const float baro_sigma_rw = 5.68e-2f; // m / sqrt(s)
 const float baro_sigma_rrw = 3.80e-2f; // (m/s) / sqrt(s)
 const float baro_correlation_time = 13e3f; // s
 
-const float mag_sigma_rw = 1.67e-3f; // ga / sqrt(s)
-const float mag_sigma_rrw = 5.46e-5f; // (ga/s) / sqrt(s)
-const float mag_correlation_time = 1e3f; // s
+const float mag_sigma_rw = 5.43e-3; // normalized mag / sqrt(s)
+const float mag_sigma_rrw = 3.34e-5; // (normalized mag /s) / sqrt(s)
+const float mag_correlation_time = 1367; // s
 
 #endif

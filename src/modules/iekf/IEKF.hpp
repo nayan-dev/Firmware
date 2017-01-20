@@ -222,7 +222,6 @@ private:
 	bool _freefall;					// are we freefalling?
 	uint64_t _gpsUSec; 				// gps internal timestamp
 	float _magDeclDeg; 				// magnetic declination (change in magnetic heading angle), deg
-	float _magInclDeg; 				// magnetic inclination (angle from horizon of field lines), deg
 	bool _attitudeInitialized;		// attitude initializtion complete
 	uint64_t _stateTimestamp;		// state prediction timestamp
 	uint64_t _covarianceTimestamp;; // covariance prediction timestamp

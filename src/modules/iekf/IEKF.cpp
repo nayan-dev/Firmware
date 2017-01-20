@@ -35,22 +35,22 @@
 #include "constants.hpp"
 
 float condMaxDefault = 1e3;
-float betaMaxDefault = 1e6;
+float betaMaxDefault = 1e3;
 
 IEKF::IEKF() :
 	_nh(), // node handlke
 	// sensors
 	_sensorAccel("accel", betaMaxDefault, condMaxDefault, 50),
 	_sensorMag("mag", betaMaxDefault, condMaxDefault, 50),
-	_sensorBaro("baro", betaMaxDefault, condMaxDefault, 50),
-	_sensorGps("gps", betaMaxDefault, condMaxDefault, 10),
-	_sensorAirspeed("airspeed", betaMaxDefault, condMaxDefault, 20),
-	_sensorFlow("flow", betaMaxDefault, condMaxDefault, 10),
-	_sensorSonar("sonar", betaMaxDefault, condMaxDefault, 20),
-	_sensorLidar("lidar", betaMaxDefault, condMaxDefault, 20),
-	_sensorVision("vision", betaMaxDefault, condMaxDefault, 10),
-	_sensorMocap("mocap", betaMaxDefault, condMaxDefault, 10),
-	_sensorLand("land_detected", betaMaxDefault, condMaxDefault, 10),
+	_sensorBaro("baro", betaMaxDefault, condMaxDefault, 0),
+	_sensorGps("gps", betaMaxDefault, condMaxDefault, 0),
+	_sensorAirspeed("airspeed", betaMaxDefault, condMaxDefault, 0),
+	_sensorFlow("flow", betaMaxDefault, condMaxDefault, 0),
+	_sensorSonar("sonar", betaMaxDefault, condMaxDefault, 0),
+	_sensorLidar("lidar", betaMaxDefault, condMaxDefault, 0),
+	_sensorVision("vision", betaMaxDefault, condMaxDefault, 0),
+	_sensorMocap("mocap", betaMaxDefault, condMaxDefault, 0),
+	_sensorLand("land_detected", betaMaxDefault, condMaxDefault, 0),
 	// subscriptions
 	_subImu(_nh.subscribe("sensor_combined", 0, &IEKF::callbackImu, this, 1)),
 	_subGps(_nh.subscribe("vehicle_gps_position", 0, &IEKF::correctGps, this, 100)),
@@ -82,7 +82,6 @@ IEKF::IEKF() :
 	_freefall(false),
 	_gpsUSec(0),
 	_magDeclDeg(0),
-	_magInclDeg(0),
 	_attitudeInitialized(false),
 	_stateTimestamp(),
 	_covarianceTimestamp(),
@@ -170,7 +169,6 @@ IEKF::IEKF() :
 	// magnetic field values for SITL
 	// TODO load from GPS or params
 	_magDeclDeg = magDeclDeg;
-	_magInclDeg = magInclDeg;
 }
 
 Vector<float, X::n> IEKF::dynamics(float t, const Vector<float, X::n> &x, const Vector<float, U::n> &u)
@@ -258,9 +256,9 @@ void IEKF::callbackImu(const sensor_combined_s *msg)
 
 		predictState(msg);
 
-		// set correciton deadline to 250 hz
+		// set correciton deadline to 10 hz
 		int lowRateCount = 5;
-		uint64_t deadline = msg->timestamp * 1e3 + 1e9 / 250;
+		uint64_t deadline = msg->timestamp * 1e3 + 1e9 / 10;
 
 		// check if sensors are ready using row late cycle
 		if (_imuLowRateIndex % lowRateCount == 0) {
@@ -280,6 +278,7 @@ void IEKF::callbackImu(const sensor_combined_s *msg)
 		}
 
 		float overrunMillis = int32_t(ros::Time::now().toNSec() - deadline) / 1.0e6f;
+
 		if (overrunMillis > 1) {
 			ROS_WARN("correction deadline exceeded by %10.4f msec",
 				 double(overrunMillis));
@@ -460,6 +459,8 @@ void IEKF::predictCovariance(const sensor_combined_s *msg)
 		_x(X::gyro_bias_bX), _x(X::gyro_bias_bY), _x(X::gyro_bias_bZ));
 	Vector3f omega_nb_b_corrected = omega_nb_b - gyro_bias_b;
 
+	float rotationSpeed = omega_nb_b_corrected.norm();
+
 	// define A matrix
 	{
 		_A.setZero();
@@ -524,6 +525,13 @@ void IEKF::predictCovariance(const sensor_combined_s *msg)
 		float pos_var_xy = process_noise_sigma_xy * process_noise_sigma_xy;
 		float pos_var_z = process_noise_sigma_z * process_noise_sigma_z;
 		float terrain_var_asl = terrain_sigma_asl * terrain_sigma_asl;
+
+		// account for gyro saturation
+		//ROS_INFO("rotation speed %10.4f", double(rotationSpeed));
+		if (rotationSpeed > 10.0f) {
+			rot_var *= 100;
+		}
+
 		_Q.setZero();
 		_Q(Xe::rot_N, Xe::rot_N) = rot_var;
 		_Q(Xe::rot_E, Xe::rot_E) = rot_var;
