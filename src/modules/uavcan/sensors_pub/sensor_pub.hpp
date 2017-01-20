@@ -45,12 +45,14 @@
 #include <uORB/topics/sensor_gyro.h>
 #include <uORB/topics/sensor_accel.h>
 #include <uORB/topics/input_rc.h>
+#include <uORB/topics/distance_sensor.h>
 #include <uavcan/uavcan.hpp>
 #include <uavcan/equipment/air_data/StaticPressure.hpp>
 #include <uavcan/equipment/air_data/StaticTemperature.hpp>
 #include <uavcan/equipment/ahrs/RawIMU.hpp>
 #include <uavcan/equipment/ahrs/MagneticFieldStrength.hpp>
 #include <uavcan/equipment/rc/Radioin.hpp>
+#include <uavcan/equipment/range_sensor/Measurement.hpp>
 
 
 #define UAVCAN_SENSOR_TRANSFER_PRIORITY 6
@@ -76,6 +78,8 @@ private:
 	int _gyro_sub = -1;
 	int _accel_sub = -1;
 	int _rcin_sub = -1;
+	int _rf_sub = -1;
+
 	bool _task_should_exit = false;
 	int update();
 	static UavcanSensorPub	*_instance;			///< singleton pointer
@@ -89,6 +93,7 @@ private:
 	uavcan::Publisher<uavcan::equipment::ahrs::MagneticFieldStrength>			_uavcan_pub_mag;
 	uavcan::Publisher<uavcan::equipment::ahrs::RawIMU>			_uavcan_pub_imu;
 	uavcan::Publisher<uavcan::equipment::rc::Radioin>			_uavcan_pub_rcin;
+	uavcan::Publisher<uavcan::equipment::range_sensor::Measurement>			_uavcan_pub_rf;
 	uavcan::TimerEventForwarder<TimerCbBinder>				_orb_timer;
 
 };

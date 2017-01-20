@@ -43,6 +43,7 @@
 #include "baro.hpp"
 #include "imu.hpp"
 #include "rcin.hpp"
+#include "rangefinder.hpp"
 /*
  * IUavcanSensorBridge
  */
@@ -53,6 +54,7 @@ void IUavcanSensorBridge::make_all(uavcan::INode &node, List<IUavcanSensorBridge
 	list.add(new UavcanGnssBridge(node));
 	list.add(new UavcanIMUBridge(node));
 	list.add(new UavcanRCinBridge(node));
+	list.add(new UavcanRangeFinderBridge(node));
 }
 
 /*

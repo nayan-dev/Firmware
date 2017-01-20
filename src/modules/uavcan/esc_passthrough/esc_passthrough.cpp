@@ -88,16 +88,15 @@ void UavcanESCPassthrough::esc_sub_cb(const uavcan::ReceivedDataStructure<uavcan
 
 		/* If we are in offboard control mode, publish the actuator controls */
 		bool updated;
+		if(_control_mode_sub == -1) {
+			_control_mode_sub = orb_subscribe(ORB_ID(vehicle_control_mode));
+		}
 		orb_check(_control_mode_sub, &updated);
 
 		if (updated) {
 			orb_copy(ORB_ID(vehicle_control_mode), _control_mode_sub, &_control_mode);
 		}
-		static uint64_t last_time;
-		if ((hrt_absolute_time() - last_time) > 1000000) {
-			printf("Act: %.6f %.6f %.6f %.6f\n", (double)msg.act_ctrl[0],(double)msg.act_ctrl[1],(double)msg.act_ctrl[2],(double)msg.act_ctrl[3]);
-			last_time = hrt_absolute_time();
-		}
+
 		if (_control_mode.flag_control_offboard_enabled) {
 
 			actuator_controls.timestamp = hrt_absolute_time();

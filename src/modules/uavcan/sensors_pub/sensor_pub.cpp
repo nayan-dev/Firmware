@@ -55,6 +55,7 @@ UavcanSensorPub::UavcanSensorPub(uavcan::INode &node) :
 	_uavcan_pub_mag(node),
 	_uavcan_pub_imu(node),
 	_uavcan_pub_rcin(node),
+	_uavcan_pub_rf(node),
 	_orb_timer(node)
 {
 	_uavcan_pub_pressure.setPriority(UAVCAN_SENSOR_TRANSFER_PRIORITY);
@@ -62,6 +63,7 @@ UavcanSensorPub::UavcanSensorPub(uavcan::INode &node) :
 	_uavcan_pub_mag.setPriority(UAVCAN_SENSOR_TRANSFER_PRIORITY);
 	_uavcan_pub_imu.setPriority(UAVCAN_SENSOR_TRANSFER_PRIORITY);
 	_uavcan_pub_rcin.setPriority(UAVCAN_SENSOR_TRANSFER_PRIORITY);
+	_uavcan_pub_rf.setPriority(UAVCAN_SENSOR_TRANSFER_PRIORITY);
 }
 
 UavcanSensorPub::~UavcanSensorPub()
@@ -76,12 +78,14 @@ int UavcanSensorPub::update()
 	bool baro_updated = false;
 	bool mag_updated = false;
 	bool rcin_updated = false;
+	bool rf_updated = false;
 
 	_baro_sub = orb_subscribe(ORB_ID(sensor_baro));
 	_mag_sub = orb_subscribe(ORB_ID(sensor_mag));
 	_gyro_sub = orb_subscribe(ORB_ID(sensor_gyro));
 	_accel_sub = orb_subscribe(ORB_ID(sensor_accel));
 	_rcin_sub = orb_subscribe(ORB_ID(input_rc));
+	_rf_sub = orb_subscribe(ORB_ID(distance_sensor));
 
 	fds.fd = _gyro_sub;
 	fds.events = POLLIN;
@@ -90,6 +94,7 @@ int UavcanSensorPub::update()
 	sensor_accel_s accel = {};
 	sensor_mag_s mag = {};
 	input_rc_s rcin = {};
+	distance_sensor_s rf = {};
 
 	while (!_task_should_exit) {
 		int ret = px4_poll(&fds, 1, 1000);
@@ -175,6 +180,15 @@ int UavcanSensorPub::update()
 				rcin_msg.channel.push_back(static_cast<int>(rcin.values[i]));
 			}
 			(void)_uavcan_pub_rcin.broadcast(rcin_msg);
+		}
+
+		orb_check(_rf_sub, &rf_updated);
+
+		if (rf_updated) {
+			orb_copy(ORB_ID(distance_sensor), _rf_sub, &rf);
+			uavcan::equipment::range_sensor::Measurement rf_msg;
+			rf_msg.range = rf.current_distance;
+			(void)_uavcan_pub_rf.broadcast(rf_msg);
 		}
 	}
 

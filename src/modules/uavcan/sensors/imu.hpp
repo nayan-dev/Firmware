@@ -57,11 +57,11 @@ public:
 
 	int init() override;
 	friend class UavcanGyro;
-	ssize_t	read(struct file *filp, char *buffer, size_t buflen);
-	int ioctl(struct file *filp, int cmd, unsigned long arg) override;
 
 private:
 	UavcanGyro *_gyro;
+	ssize_t	read(struct file *filp, char *buffer, size_t buflen);
+	int ioctl(struct file *filp, int cmd, unsigned long arg) override;
 
 	void imu_sub_cb(const uavcan::ReceivedDataStructure<uavcan::equipment::ahrs::RawIMU> &msg);
 

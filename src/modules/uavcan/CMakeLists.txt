@@ -76,6 +76,7 @@ px4_add_module(
 		sensors/baro.cpp
 		sensors/imu.cpp
 		sensors/rcin.cpp
+		sensors/rangefinder.cpp
 		esc_passthrough/esc_passthrough.cpp
 
 		# Sensors Pub

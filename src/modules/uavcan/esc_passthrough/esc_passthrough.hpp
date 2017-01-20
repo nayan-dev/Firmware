@@ -60,7 +60,6 @@ class UavcanESCPassthrough : public device::CDev
 public:
 	UavcanESCPassthrough(uavcan::INode &node) :
 		device::CDev("uavcan_esc_out", "/dev/uavcan/esc_out"),
-		_control_mode_sub(orb_subscribe(ORB_ID(vehicle_control_mode))),
 		_actuator_controls_pub(nullptr),
 		_offboard_control_mode_pub(nullptr),
 		_sub_esc(node)
@@ -77,7 +76,7 @@ public:
 private:
 	int	_control_task = -1;		// task handle for task
 	struct vehicle_control_mode_s _control_mode;
-	int 	_control_mode_sub;
+	int 	_control_mode_sub = -1;
 	orb_advert_t _actuator_controls_pub;
 	orb_advert_t _offboard_control_mode_pub;
 	int32_t _pwm_disarmed;
