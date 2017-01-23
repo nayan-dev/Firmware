@@ -75,7 +75,6 @@ int UavcanEscController::init()
 		warnx("ESC status sub failed %i", res);
 		return res;
 	}
-
 	param_get(param_find("PWM_MIN"),&_pwm_min);
 
 	param_get(param_find("PWM_MAX"),&_pwm_max);
@@ -115,9 +114,9 @@ void UavcanEscController::update_outputs(float *outputs, unsigned num_outputs)
 
 	for (unsigned i = 0; i < num_outputs; i++) {
 		if (_armed_mask & MOTOR_BIT(i)) {
-			msg.act_ctrl.push_back(static_cast<int>(outputs[i]));
+			msg.act_ctrl.push_back(outputs[i]);
 		} else {
-			msg.act_ctrl.push_back(static_cast<unsigned>(0));
+			msg.act_ctrl.push_back(0.0f);
 		}
 	}
 //	uavcan::equipment::esc::RawCommand msg;

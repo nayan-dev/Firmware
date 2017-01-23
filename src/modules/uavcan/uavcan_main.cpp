@@ -964,7 +964,8 @@ int UavcanNode::run()
 			// Output to the bus
 			_outputs.timestamp = hrt_absolute_time();
 			perf_begin(_perfcnt_esc_mixer_output_elapsed);
-			_esc_controller.update_outputs(_outputs.output, _outputs.noutputs);
+			//TODO: cleanup this fix
+			_esc_controller.update_outputs(_controls[0].control, _outputs.noutputs);
 			perf_end(_perfcnt_esc_mixer_output_elapsed);
 		}
 
