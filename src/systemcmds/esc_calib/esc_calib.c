@@ -297,7 +297,7 @@ esc_calib_main(int argc, char *argv[])
 	/* wait for user confirmation */
 	printf("\nHigh PWM set: %d\n"
 	       "\n"
-	       "Connect battery now and hit ENTER after the ESCs confirm the first calibration step\n"
+	       "Connect battery now and hit 'c' after the ESCs confirm the first calibration step\n"
 	       "\n", pwm_high);
 	fflush(stdout);
 
@@ -323,7 +323,7 @@ esc_calib_main(int argc, char *argv[])
 				goto done;
 			}
 
-			if (c == 13) {
+			if (c == 'c') {
 				break;
 
 			} else if (c == 0x03 || c == 0x63 || c == 'q') {
@@ -338,7 +338,7 @@ esc_calib_main(int argc, char *argv[])
 
 	printf("Low PWM set: %d\n"
 	       "\n"
-	       "Hit ENTER when finished\n"
+	       "Hit 'c' when finished\n"
 	       "\n", pwm_low);
 
 	while (1) {
@@ -363,7 +363,7 @@ esc_calib_main(int argc, char *argv[])
 				goto done;
 			}
 
-			if (c == 13) {
+			if (c == 'c') {
 				break;
 
 			} else if (c == 0x03 || c == 0x63 || c == 'q') {
