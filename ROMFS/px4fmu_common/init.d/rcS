@@ -675,6 +675,12 @@ then
 		px4flow start &
 	fi
 
+	if ver hwcmp NAYAN_MST
+	then
+		# Check for flow sensor - as it is a background task, launch it last
+		px4flow start &
+	fi
+
 	if ver hwcmp MINDPX_V2
 	then
 		#mindxp also need flow
@@ -985,7 +991,10 @@ then
 
 # End of autostart
 fi
-
+if param compare SENS_EN_LL40LS 1
+then
+	pwm_input reset
+fi
 # There is no further script processing, so we can free some RAM
 # XXX potentially unset all script variables.
 unset TUNE_ERR
