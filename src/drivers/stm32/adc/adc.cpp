@@ -314,7 +314,7 @@ ADC::_tick()
 void
 ADC::update_system_power(void)
 {
-#if defined (CONFIG_ARCH_BOARD_PX4FMU_V2) || defined (CONFIG_ARCH_BOARD_MINDPX_V2)
+#if defined (CONFIG_ARCH_BOARD_PX4FMU_V2) || defined (CONFIG_ARCH_BOARD_MINDPX_V2) || defined (CONFIG_ARCH_BOARD_PX4FMU_V5)
 	system_power_s system_power = {};
 	system_power.timestamp = hrt_absolute_time();
 
