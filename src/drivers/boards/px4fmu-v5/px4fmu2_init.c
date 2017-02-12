@@ -234,6 +234,13 @@ __EXPORT int nsh_archinitialize(void)
 //	stm32_configgpio(GPIO_VDD_5V_HIPOWER_OC);
 //	stm32_configgpio(GPIO_VDD_5V_PERIPH_OC);
 
+//	stm32_configgpio(GPIO_SBUS_INPUT); /* xxx alternate function */
+//	stm32_configgpio(GPIO_SBUS_OUTPUT);
+//
+//	/* sbus output enable is active low - disable it by default */
+//	stm32_gpiowrite(GPIO_SBUS_OENABLE, true);
+//	stm32_configgpio(GPIO_SBUS_OENABLE);
+
 	/* configure the GPIO pins to outputs and keep them low */
 	stm32_configgpio(GPIO_SBUS_INV);
 	stm32_configgpio(GPIO_GPIO0_OUTPUT);
