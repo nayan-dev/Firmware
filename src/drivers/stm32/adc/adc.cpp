@@ -341,12 +341,12 @@ ADC::update_system_power(void)
 	system_power.hipower_5V_OC = 1;
 #else
 	// note that the valid pins are active low
-	system_power.brick_valid   = !stm32_gpioread(GPIO_VDD_BRICK_VALID);
-	system_power.servo_valid   = !stm32_gpioread(GPIO_VDD_SERVO_VALID);
-
-	// OC pins are active low
-	system_power.periph_5V_OC  = !stm32_gpioread(GPIO_VDD_5V_PERIPH_OC);
-	system_power.hipower_5V_OC = !stm32_gpioread(GPIO_VDD_5V_HIPOWER_OC);
+//	system_power.brick_valid   = !stm32_gpioread(GPIO_VDD_BRICK_VALID);
+//	system_power.servo_valid   = !stm32_gpioread(GPIO_VDD_SERVO_VALID);
+//
+//	// OC pins are active low
+//	system_power.periph_5V_OC  = !stm32_gpioread(GPIO_VDD_5V_PERIPH_OC);
+//	system_power.hipower_5V_OC = !stm32_gpioread(GPIO_VDD_5V_HIPOWER_OC);
 #endif
 
 	/* lazily publish */
