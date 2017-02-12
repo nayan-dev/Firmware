@@ -53,7 +53,7 @@
  ************************************************************************************/
 
 /* Clocking *************************************************************************/
-/* The PX4FMUV5 uses a 24MHz crystal connected to the HSE.
+/* The PX4FMUV5 uses a 16MHz crystal connected to the HSE.
  *
  * This is the "standard" configuration as set up by arch/arm/src/stm32f40xx_rcc.c:
  *   System Clock source           : PLL (HSE)
@@ -82,7 +82,7 @@
  * LSE - not installed
  */
 
-#define STM32_BOARD_XTAL        24000000ul
+#define STM32_BOARD_XTAL        16000000ul
 
 #define STM32_HSI_FREQUENCY     16000000ul
 #define STM32_LSI_FREQUENCY     32000
@@ -102,7 +102,7 @@
  *         = 48,000,000
  */
 
-#define STM32_PLLCFG_PLLM       RCC_PLLCFG_PLLM(24)
+#define STM32_PLLCFG_PLLM       RCC_PLLCFG_PLLM(16)
 #define STM32_PLLCFG_PLLN       RCC_PLLCFG_PLLN(336)
 #define STM32_PLLCFG_PLLP       RCC_PLLCFG_PLLP_2
 #define STM32_PLLCFG_PLLQ       RCC_PLLCFG_PLLQ(7)
@@ -194,38 +194,28 @@
 
 #define DMAMAP_SDIO DMAMAP_SDIO_1
 
-/* Alternate function pin selections ************************************************/
-
 /*
  * UARTs.
  */
-#define GPIO_USART1_RX	GPIO_USART1_RX_1	/* console in from IO */
-#define GPIO_USART1_TX	0			/* USART1 is RX-only */
+#define GPIO_USART1_RX	GPIO_USART1_RX_2		/* console in from MC */
+#define GPIO_USART1_TX	GPIO_USART1_TX_2
 
 #define GPIO_USART2_RX	GPIO_USART2_RX_2
 #define GPIO_USART2_TX	GPIO_USART2_TX_2
-#define GPIO_USART2_RTS	GPIO_USART2_RTS_2
-#define GPIO_USART2_CTS	GPIO_USART2_CTS_2
 
 #define GPIO_USART3_RX	GPIO_USART3_RX_3
 #define GPIO_USART3_TX	GPIO_USART3_TX_3
-#define GPIO_USART3_RTS	GPIO_USART3_RTS_2
-#define GPIO_USART3_CTS	GPIO_USART3_CTS_2
 
 #define GPIO_UART4_RX	GPIO_UART4_RX_1
 #define GPIO_UART4_TX	GPIO_UART4_TX_1
-
-#define GPIO_USART6_RX	GPIO_USART6_RX_1
-#define GPIO_USART6_TX	GPIO_USART6_TX_1
-
-#define GPIO_UART7_RX	GPIO_UART7_RX_1
-#define GPIO_UART7_TX	GPIO_UART7_TX_1
 
 /* UART8 has no alternate pin config */
 
 /* UART RX DMA configurations */
 #define DMAMAP_USART1_RX DMAMAP_USART1_RX_2
 #define DMAMAP_USART6_RX DMAMAP_USART6_RX_2
+
+
 
 /*
  * CAN
@@ -235,8 +225,8 @@
  */
 #define GPIO_CAN1_RX	GPIO_CAN1_RX_3
 #define GPIO_CAN1_TX	GPIO_CAN1_TX_3
-#define GPIO_CAN2_RX	GPIO_CAN2_RX_1
-#define GPIO_CAN2_TX	GPIO_CAN2_TX_2
+//#define GPIO_CAN2_RX	GPIO_CAN2_RX_1
+//#define GPIO_CAN2_TX	GPIO_CAN2_TX_2
 
 /*
  * I2C

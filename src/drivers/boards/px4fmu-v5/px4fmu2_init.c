@@ -216,25 +216,26 @@ __EXPORT int nsh_archinitialize(void)
 {
 
 	/* configure ADC pins */
-	stm32_configgpio(GPIO_ADC1_IN2);	/* BATT_VOLTAGE_SENS */
-	stm32_configgpio(GPIO_ADC1_IN3);	/* BATT_CURRENT_SENS */
-	stm32_configgpio(GPIO_ADC1_IN4);	/* VDD_5V_SENS */
-	// stm32_configgpio(GPIO_ADC1_IN10);	/* used by VBUS valid */
-	// stm32_configgpio(GPIO_ADC1_IN11);	/* unused */
+//	stm32_configgpio(GPIO_ADC1_IN2);	/* BATT_VOLTAGE_SENS */
+//	stm32_configgpio(GPIO_ADC1_IN3);	/* BATT_CURRENT_SENS */
+//	stm32_configgpio(GPIO_ADC1_IN4);	/* VDD_5V_SENS */
+	 stm32_configgpio(GPIO_ADC1_IN10);	/* used by VBUS valid */
+	 stm32_configgpio(GPIO_ADC1_IN11);	/* unused */
 	// stm32_configgpio(GPIO_ADC1_IN12);	/* used by MPU6000 CS */
-	stm32_configgpio(GPIO_ADC1_IN13);	/* FMU_AUX_ADC_1 */
-	stm32_configgpio(GPIO_ADC1_IN14);	/* FMU_AUX_ADC_2 */
-	stm32_configgpio(GPIO_ADC1_IN15);	/* PRESSURE_SENS */
+//	stm32_configgpio(GPIO_ADC1_IN13);	/* FMU_AUX_ADC_1 */
+//	stm32_configgpio(GPIO_ADC1_IN14);	/* FMU_AUX_ADC_2 */
+//	stm32_configgpio(GPIO_ADC1_IN15);	/* PRESSURE_SENS */
 
 	/* configure power supply control/sense pins */
-	stm32_configgpio(GPIO_VDD_5V_PERIPH_EN);
-	stm32_configgpio(GPIO_VDD_3V3_SENSORS_EN);
-	stm32_configgpio(GPIO_VDD_BRICK_VALID);
-	stm32_configgpio(GPIO_VDD_SERVO_VALID);
-	stm32_configgpio(GPIO_VDD_5V_HIPOWER_OC);
-	stm32_configgpio(GPIO_VDD_5V_PERIPH_OC);
+//	stm32_configgpio(GPIO_VDD_5V_PERIPH_EN);
+//	stm32_configgpio(GPIO_VDD_3V3_SENSORS_EN);
+//	stm32_configgpio(GPIO_VDD_BRICK_VALID);
+//	stm32_configgpio(GPIO_VDD_SERVO_VALID);
+//	stm32_configgpio(GPIO_VDD_5V_HIPOWER_OC);
+//	stm32_configgpio(GPIO_VDD_5V_PERIPH_OC);
 
 	/* configure the GPIO pins to outputs and keep them low */
+	stm32_configgpio(GPIO_SBUS_INV);
 	stm32_configgpio(GPIO_GPIO0_OUTPUT);
 	stm32_configgpio(GPIO_GPIO1_OUTPUT);
 	stm32_configgpio(GPIO_GPIO2_OUTPUT);
@@ -288,9 +289,9 @@ __EXPORT int nsh_archinitialize(void)
 	SPI_SETFREQUENCY(spi1, 10000000);
 	SPI_SETBITS(spi1, 8);
 	SPI_SETMODE(spi1, SPIDEV_MODE3);
-	SPI_SELECT(spi1, PX4_SPIDEV_GYRO, false);
-	SPI_SELECT(spi1, PX4_SPIDEV_ACCEL_MAG, false);
-	SPI_SELECT(spi1, PX4_SPIDEV_BARO, false);
+//	SPI_SELECT(spi1, PX4_SPIDEV_GYRO, false);
+//	SPI_SELECT(spi1, PX4_SPIDEV_ACCEL_MAG, false);
+//	SPI_SELECT(spi1, PX4_SPIDEV_BARO, false);
 	SPI_SELECT(spi1, PX4_SPIDEV_MPU, false);
 	up_udelay(20);
 
@@ -311,7 +312,7 @@ __EXPORT int nsh_archinitialize(void)
 	SPI_SETFREQUENCY(spi2, 12 * 1000 * 1000);
 	SPI_SETBITS(spi2, 8);
 	SPI_SETMODE(spi2, SPIDEV_MODE3);
-	SPI_SELECT(spi2, SPIDEV_FLASH, false);
+//	SPI_SELECT(spi2, SPIDEV_FLASH, false);
 
 	spi4 = up_spiinitialize(4);
 
@@ -319,8 +320,10 @@ __EXPORT int nsh_archinitialize(void)
 	SPI_SETFREQUENCY(spi4, 10000000);
 	SPI_SETBITS(spi4, 8);
 	SPI_SETMODE(spi4, SPIDEV_MODE3);
-	SPI_SELECT(spi4, PX4_SPIDEV_EXT0, false);
-	SPI_SELECT(spi4, PX4_SPIDEV_EXT1, false);
+//	SPI_SELECT(spi4, PX4_SPIDEV_EXT0, false);
+//	SPI_SELECT(spi4, PX4_SPIDEV_EXT1, false);
+	SPI_SELECT(spi4, PX4_SPIDEV_BARO, false);
+	SPI_SELECT(spi4, SPIDEV_FLASH, false);
 
 #ifdef CONFIG_MMCSD
 	/* First, get an instance of the SDIO interface */
