@@ -1742,7 +1742,7 @@ PX4IO::io_get_status()
 #endif
 
 #ifdef CONFIG_ARCH_BOARD_PX4FMU_V5
-	io_handle_vservo(regs[4], regs[5]);
+//	io_handle_vservo(regs[4], regs[5]);
 #endif
 
 	return ret;
@@ -2052,40 +2052,40 @@ PX4IO::print_debug()
 #endif
 
 #ifdef CONFIG_ARCH_BOARD_PX4FMU_V5
-	int io_fd = -1;
-
-	if (io_fd <= 0) {
-		io_fd = ::open("/dev/ttyS0", O_RDONLY | O_NONBLOCK | O_NOCTTY);
-	}
-
-	/* read IO's output */
-	if (io_fd >= 0) {
-		pollfd fds[1];
-		fds[0].fd = io_fd;
-		fds[0].events = POLLIN;
-
-		usleep(500);
-		int pret = ::poll(fds, sizeof(fds) / sizeof(fds[0]), 0);
-
-		if (pret > 0) {
-			int count;
-			char buf[65];
-
-			do {
-				count = ::read(io_fd, buf, sizeof(buf) - 1);
-
-				if (count > 0) {
-					/* enforce null termination */
-					buf[count] = '\0';
-					warnx("IO CONSOLE: %s", buf);
-				}
-
-			} while (count > 0);
-		}
-
-		::close(io_fd);
-		return 0;
-	}
+//	int io_fd = -1;
+//
+//	if (io_fd <= 0) {
+//		io_fd = ::open("/dev/ttyS0", O_RDONLY | O_NONBLOCK | O_NOCTTY);
+//	}
+//
+//	/* read IO's output */
+//	if (io_fd >= 0) {
+//		pollfd fds[1];
+//		fds[0].fd = io_fd;
+//		fds[0].events = POLLIN;
+//
+//		usleep(500);
+//		int pret = ::poll(fds, sizeof(fds) / sizeof(fds[0]), 0);
+//
+//		if (pret > 0) {
+//			int count;
+//			char buf[65];
+//
+//			do {
+//				count = ::read(io_fd, buf, sizeof(buf) - 1);
+//
+//				if (count > 0) {
+//					/* enforce null termination */
+//					buf[count] = '\0';
+//					warnx("IO CONSOLE: %s", buf);
+//				}
+//
+//			} while (count > 0);
+//		}
+//
+//		::close(io_fd);
+//		return 0;
+//	}
 
 #endif
 	return 1;
@@ -2394,11 +2394,11 @@ PX4IO::print_status(bool extended_status)
 	       io_reg_get(PX4IO_PAGE_SETUP, PX4IO_P_SETUP_IGNORE_SAFETY));
 #endif
 #ifdef CONFIG_ARCH_BOARD_PX4FMU_V5
-	printf("rates 0x%04x default %u alt %u sbus %u\n",
-	       io_reg_get(PX4IO_PAGE_SETUP, PX4IO_P_SETUP_PWM_RATES),
-	       io_reg_get(PX4IO_PAGE_SETUP, PX4IO_P_SETUP_PWM_DEFAULTRATE),
-	       io_reg_get(PX4IO_PAGE_SETUP, PX4IO_P_SETUP_PWM_ALTRATE),
-	       io_reg_get(PX4IO_PAGE_SETUP, PX4IO_P_SETUP_SBUS_RATE));
+//	printf("rates 0x%04x default %u alt %u sbus %u\n",
+//	       io_reg_get(PX4IO_PAGE_SETUP, PX4IO_P_SETUP_PWM_RATES),
+//	       io_reg_get(PX4IO_PAGE_SETUP, PX4IO_P_SETUP_PWM_DEFAULTRATE),
+//	       io_reg_get(PX4IO_PAGE_SETUP, PX4IO_P_SETUP_PWM_ALTRATE),
+//	       io_reg_get(PX4IO_PAGE_SETUP, PX4IO_P_SETUP_SBUS_RATE));
 #endif
 	printf("debuglevel %u\n", io_reg_get(PX4IO_PAGE_SETUP, PX4IO_P_SETUP_SET_DEBUG));
 
@@ -2792,7 +2792,7 @@ PX4IO::ioctl(file *filep, int cmd, unsigned long arg)
 			ret = -EINVAL;
 #endif
 #ifdef CONFIG_ARCH_BOARD_PX4FMU_V5
-			ret = -EINVAL;
+//			ret = -EINVAL;
 #endif
 			break;
 		}
@@ -2813,7 +2813,7 @@ PX4IO::ioctl(file *filep, int cmd, unsigned long arg)
 		ret = -EINVAL;
 #endif
 #ifdef CONFIG_ARCH_BOARD_PX4FMU_V5
-		ret = -EINVAL;
+//		ret = -EINVAL;
 #endif
 		break;
 
@@ -2833,7 +2833,7 @@ PX4IO::ioctl(file *filep, int cmd, unsigned long arg)
 		ret = -EINVAL;
 #endif
 #ifdef CONFIG_ARCH_BOARD_PX4FMU_V5
-		ret = -EINVAL;
+//		ret = -EINVAL;
 #endif
 		break;
 
@@ -2850,7 +2850,7 @@ PX4IO::ioctl(file *filep, int cmd, unsigned long arg)
 		ret = -EINVAL;
 #endif
 #ifdef CONFIG_ARCH_BOARD_PX4FMU_V5
-		ret = -EINVAL;
+//		ret = -EINVAL;
 #endif
 		break;
 
@@ -3618,10 +3618,10 @@ px4io_main(int argc, char *argv[])
 			fn[3] =	nullptr;
 
 #elif defined(CONFIG_ARCH_BOARD_PX4FMU_V5)
-			fn[0] = "/etc/extras/px4io-v2.bin";
-			fn[1] =	"/fs/microsd/px4io2.bin";
-			fn[2] =	"/fs/microsd/px4io.bin";
-			fn[3] =	nullptr;
+//			fn[0] = "/etc/extras/px4io-v2.bin";
+//			fn[1] =	"/fs/microsd/px4io2.bin";
+//			fn[2] =	"/fs/microsd/px4io.bin";
+//			fn[3] =	nullptr;
 #else
 #error "unknown board"
 #endif
