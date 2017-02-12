@@ -57,6 +57,7 @@
 
 #define UAVCAN_SENSOR_TRANSFER_PRIORITY 6
 #define MAX_RATE_HZ 1000
+#define SENSOR_COUNT_MAX                3
 
 class UavcanSensorPub
 {
@@ -74,13 +75,16 @@ private:
 	TimerCbBinder;
 	int	_control_task = -1;		// task handle for task
 	int	_baro_sub = -1;
-	int _mag_sub = -1;
+	int _mag_sub[SENSOR_COUNT_MAX];
 	int _gyro_sub = -1;
 	int _accel_sub = -1;
 	int _rcin_sub = -1;
 	int _rf_sub = -1;
+	int _sens_sub  = -1;
+	uint8_t _mag_priority[SENSOR_COUNT_MAX];
 
 	bool _task_should_exit = false;
+	static int32_t _mag_primary_id;
 	int update();
 	static UavcanSensorPub	*_instance;			///< singleton pointer
 	/*

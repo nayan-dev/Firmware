@@ -156,9 +156,9 @@ void UavcanMagnetometerBridge::mag_sub_cb(const uavcan::ReceivedDataStructure<ua
 	 */
 	_report.timestamp = hrt_absolute_time();
 
-	_report.x = (msg.magnetic_field_ga[0] - _scale.x_offset) * _scale.x_scale;
-	_report.y = (msg.magnetic_field_ga[1] - _scale.y_offset) * _scale.y_scale;
-	_report.z = (msg.magnetic_field_ga[2] - _scale.z_offset) * _scale.z_scale;
+	_report.x = msg.magnetic_field_ga[0];
+	_report.y = msg.magnetic_field_ga[1];
+	_report.z = msg.magnetic_field_ga[2];
 	unlock();
 
 	publish(msg.getSrcNodeID().get(), &_report);

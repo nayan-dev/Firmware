@@ -45,9 +45,11 @@
 #include <px4_tasks.h>
 #include <px4_posix.h>
 #include <px4_time.h>
+#include <drivers/drv_sensor.h>
+#include <lib/conversion/rotation.h>
 
 UavcanSensorPub *UavcanSensorPub::_instance;
-
+int32_t UavcanSensorPub::_mag_primary_id = 0;
 UavcanSensorPub::UavcanSensorPub(uavcan::INode &node) :
 	_node(node),
 	_uavcan_pub_pressure(node),
@@ -81,7 +83,14 @@ int UavcanSensorPub::update()
 	bool rf_updated = false;
 
 	_baro_sub = orb_subscribe(ORB_ID(sensor_baro));
-	_mag_sub = orb_subscribe(ORB_ID(sensor_mag));
+
+	uint8_t group_count = orb_group_count(ORB_ID(sensor_mag));
+	for (unsigned i = 0; i < group_count; i++) {
+		_mag_sub[i] = orb_subscribe_multi(ORB_ID(sensor_mag), i);
+		int32_t priority;
+		orb_priority(_mag_sub[i], &priority);
+		_mag_priority[i] = (uint8_t)priority;
+	}
 	_gyro_sub = orb_subscribe(ORB_ID(sensor_gyro));
 	_accel_sub = orb_subscribe(ORB_ID(sensor_accel));
 	_rcin_sub = orb_subscribe(ORB_ID(input_rc));
@@ -147,16 +156,19 @@ int UavcanSensorPub::update()
 		imu_msg.accel_integral_dt = accel.integral_dt;
 		(void)_uavcan_pub_imu.broadcast(imu_msg);
 
-		orb_check(_mag_sub, &mag_updated);
-
-		if (mag_updated) {
-			orb_copy(ORB_ID(sensor_mag), _mag_sub, &mag);
-			uavcan::equipment::ahrs::MagneticFieldStrength mag_msg;
-
-			mag_msg.magnetic_field_ga[0] = mag.x;
-			mag_msg.magnetic_field_ga[1] = mag.y;
-			mag_msg.magnetic_field_ga[2] = mag.z;
-			(void)_uavcan_pub_mag.broadcast(mag_msg);
+		for(uint8_t i = 0; i < group_count; i++) {
+			mag_updated = false;
+			orb_check(_mag_sub[i], &mag_updated);
+			//printf("MAG DATA: %d %d %.6f %.6f %.6f\n", i, _mag_priority[i], (double)mag.x, (double)mag.y, (double)mag.z);
+			if (mag_updated && (_mag_priority[i] == ORB_PRIO_MAX)) {
+				orb_copy(ORB_ID(sensor_mag), _mag_sub[i], &mag);
+					uavcan::equipment::ahrs::MagneticFieldStrength mag_msg;
+					rotate_3f(ROTATION_ROLL_180, mag.x, mag.y, mag.z);
+					mag_msg.magnetic_field_ga[0] = mag.x;
+					mag_msg.magnetic_field_ga[1] = mag.y;
+					mag_msg.magnetic_field_ga[2] = mag.z;
+					(void)_uavcan_pub_mag.broadcast(mag_msg);
+				}
 		}
 
 		orb_check(_baro_sub, &baro_updated);
@@ -223,5 +235,6 @@ int UavcanSensorPub::start(uavcan::INode &node)
 		return -errno;
 	}
 
+	param_get(param_find("CAL_MAG0_ID"), &_mag_primary_id);
 	return OK;
 }
