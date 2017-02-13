@@ -319,6 +319,21 @@ const PX4FMU::GPIOConfig PX4FMU::_gpio_tab[] = {
 //	{GPIO_VDD_5V_HIPOWER_OC, 0,                       0},
 //	{GPIO_VDD_5V_PERIPH_OC,  0,                       0},
 #endif
+#if defined(CONFIG_ARCH_BOARD_PX4FMU_V6)
+	{GPIO_GPIO0_INPUT,       GPIO_GPIO0_OUTPUT,       0},
+	{GPIO_GPIO1_INPUT,       GPIO_GPIO1_OUTPUT,       0},
+	{GPIO_GPIO2_INPUT,       GPIO_GPIO2_OUTPUT,       0},
+	{GPIO_GPIO3_INPUT,       GPIO_GPIO3_OUTPUT,       0},
+	{GPIO_GPIO4_INPUT,       GPIO_GPIO4_OUTPUT,       0},
+	{GPIO_GPIO5_INPUT,       GPIO_GPIO5_OUTPUT,       0},
+
+//	{0,                      GPIO_VDD_5V_PERIPH_EN,   0},
+//	{0,                      GPIO_VDD_3V3_SENSORS_EN, 0},
+//	{GPIO_VDD_BRICK_VALID,   0,                       0},
+//	{GPIO_VDD_SERVO_VALID,   0,                       0},
+//	{GPIO_VDD_5V_HIPOWER_OC, 0,                       0},
+//	{GPIO_VDD_5V_PERIPH_OC,  0,                       0},
+#endif
 #if defined(CONFIG_ARCH_BOARD_PX4FMU_V4)
 	{GPIO_GPIO0_INPUT,       GPIO_GPIO0_OUTPUT,       0},
 	{GPIO_GPIO1_INPUT,       GPIO_GPIO1_OUTPUT,       0},
@@ -1980,7 +1995,7 @@ PX4FMU::pwm_ioctl(file *filp, int cmd, unsigned long arg)
 				set_mode(MODE_4PWM);
 				break;
 
-#if defined(CONFIG_ARCH_BOARD_PX4FMU_V2) ||  defined(CONFIG_ARCH_BOARD_PX4FMU_V4) ||  defined(CONFIG_ARCH_BOARD_PX4FMU_V5) \
+#if defined(CONFIG_ARCH_BOARD_PX4FMU_V2) ||  defined(CONFIG_ARCH_BOARD_PX4FMU_V4) ||  defined(CONFIG_ARCH_BOARD_PX4FMU_V5) ||  defined(CONFIG_ARCH_BOARD_PX4FMU_V6) \
 	|| defined(CONFIG_ARCH_BOARD_MINDPX_V2) || defined(CONFIG_ARCH_BOARD_VRBRAIN_V51) || defined(CONFIG_ARCH_BOARD_VRBRAIN_V52) || defined(CONFIG_ARCH_BOARD_VRBRAIN_V54) || defined(CONFIG_ARCH_BOARD_VRCORE_V10) || defined(CONFIG_ARCH_BOARD_VRUBRAIN_V51) || defined(CONFIG_ARCH_BOARD_VRUBRAIN_V52)
 			case 6:
 				set_mode(MODE_6PWM);
@@ -2444,8 +2459,115 @@ PX4FMU::sensor_reset(int ms)
 	// stm32_configgpio(GPIO_EXTI_MPU_DRDY);
 
 #endif
+#endif
+
+#if defined(CONFIG_ARCH_BOARD_PX4FMU_V6)
+
+	if (ms < 1) {
+		ms = 1;
+	}
+
+	/* disable SPI bus */
+//	stm32_configgpio(GPIO_SPI_CS_GYRO_OFF);
+//	stm32_configgpio(GPIO_SPI_CS_ACCEL_MAG_OFF);
+	stm32_configgpio(GPIO_SPI_CS_BARO_OFF);
+	stm32_configgpio(GPIO_SPI_CS_MPU_OFF);
+
+//	stm32_gpiowrite(GPIO_SPI_CS_GYRO_OFF, 0);
+//	stm32_gpiowrite(GPIO_SPI_CS_ACCEL_MAG_OFF, 0);
+	stm32_gpiowrite(GPIO_SPI_CS_BARO_OFF, 0);
+	stm32_gpiowrite(GPIO_SPI_CS_MPU_OFF, 0);
+
+	stm32_configgpio(GPIO_SPI1_SCK_OFF);
+	stm32_configgpio(GPIO_SPI1_MISO_OFF);
+	stm32_configgpio(GPIO_SPI1_MOSI_OFF);
+
+	stm32_gpiowrite(GPIO_SPI1_SCK_OFF, 0);
+	stm32_gpiowrite(GPIO_SPI1_MISO_OFF, 0);
+	stm32_gpiowrite(GPIO_SPI1_MOSI_OFF, 0);
+
+//	stm32_configgpio(GPIO_GYRO_DRDY_OFF);
+//	stm32_configgpio(GPIO_MAG_DRDY_OFF);
+//	stm32_configgpio(GPIO_ACCEL_DRDY_OFF);
+//	stm32_configgpio(GPIO_EXTI_MPU_DRDY_OFF);
+
+//	stm32_gpiowrite(GPIO_GYRO_DRDY_OFF, 0);
+//	stm32_gpiowrite(GPIO_MAG_DRDY_OFF, 0);
+//	stm32_gpiowrite(GPIO_ACCEL_DRDY_OFF, 0);
+//	stm32_gpiowrite(GPIO_EXTI_MPU_DRDY_OFF, 0);
+
+	/* set the sensor rail off */
+//	stm32_configgpio(GPIO_VDD_3V3_SENSORS_EN);
+//	stm32_gpiowrite(GPIO_VDD_3V3_SENSORS_EN, 0);
+
+	/* wait for the sensor rail to reach GND */
+	usleep(ms * 1000);
+	warnx("reset done, %d ms", ms);
+
+	/* re-enable power */
+
+	/* switch the sensor rail back on */
+//	stm32_gpiowrite(GPIO_VDD_3V3_SENSORS_EN, 1);
+
+	/* wait a bit before starting SPI, different times didn't influence results */
+	usleep(100);
+
+	/* reconfigure the SPI pins */
+#ifdef CONFIG_STM32_SPI1
+//	stm32_configgpio(GPIO_SPI_CS_GYRO);
+//	stm32_configgpio(GPIO_SPI_CS_ACCEL_MAG);
+//	stm32_configgpio(GPIO_SPI_CS_BARO);
+	stm32_configgpio(GPIO_SPI_CS_MPU);
+
+	/* De-activate all peripherals,
+	 * required for some peripheral
+	 * state machines
+//	 */
+//	stm32_gpiowrite(GPIO_SPI_CS_GYRO, 1);
+//	stm32_gpiowrite(GPIO_SPI_CS_ACCEL_MAG, 1);
+//	stm32_gpiowrite(GPIO_SPI_CS_BARO, 1);
+	stm32_gpiowrite(GPIO_SPI_CS_MPU, 1);
+
+	stm32_configgpio(GPIO_SPI1_SCK);
+	stm32_configgpio(GPIO_SPI1_MISO);
+	stm32_configgpio(GPIO_SPI1_MOSI);
+
+	// // XXX bring up the EXTI pins again
+	// stm32_configgpio(GPIO_GYRO_DRDY);
+	// stm32_configgpio(GPIO_MAG_DRDY);
+	// stm32_configgpio(GPIO_ACCEL_DRDY);
+	// stm32_configgpio(GPIO_EXTI_MPU_DRDY);
 
 #endif
+
+#ifdef CONFIG_STM32_SPI4
+//	stm32_configgpio(GPIO_SPI_CS_GYRO);
+//	stm32_configgpio(GPIO_SPI_CS_ACCEL_MAG);
+	stm32_configgpio(GPIO_SPI_CS_BARO);
+//	stm32_configgpio(GPIO_SPI_CS_MPU);
+
+	/* De-activate all peripherals,
+	 * required for some peripheral
+	 * state machines
+//	 */
+//	stm32_gpiowrite(GPIO_SPI_CS_GYRO, 1);
+//	stm32_gpiowrite(GPIO_SPI_CS_ACCEL_MAG, 1);
+	stm32_gpiowrite(GPIO_SPI_CS_BARO, 1);
+//	stm32_gpiowrite(GPIO_SPI_CS_MPU, 1);
+
+	stm32_configgpio(GPIO_SPI4_SCK);
+	stm32_configgpio(GPIO_SPI4_MISO);
+	stm32_configgpio(GPIO_SPI4_MOSI);
+
+	// // XXX bring up the EXTI pins again
+	// stm32_configgpio(GPIO_GYRO_DRDY);
+	// stm32_configgpio(GPIO_MAG_DRDY);
+	// stm32_configgpio(GPIO_ACCEL_DRDY);
+	// stm32_configgpio(GPIO_EXTI_MPU_DRDY);
+
+#endif
+#endif
+
 
 #if defined(CONFIG_ARCH_BOARD_PX4FMU_V4)
 
@@ -2651,6 +2773,27 @@ PX4FMU::peripheral_reset(int ms)
 	/* switch the peripheral rail back on */
 //	stm32_gpiowrite(GPIO_VDD_5V_PERIPH_EN, 0);
 #endif
+
+#if defined(CONFIG_ARCH_BOARD_PX4FMU_V6)
+
+	if (ms < 1) {
+		ms = 10;
+	}
+
+	/* set the peripheral rails off */
+//	stm32_configgpio(GPIO_VDD_5V_PERIPH_EN);
+//	stm32_gpiowrite(GPIO_VDD_5V_PERIPH_EN, 1);
+
+	/* wait for the peripheral rail to reach GND */
+	usleep(ms * 1000);
+	warnx("reset done, %d ms", ms);
+
+	/* re-enable power */
+
+	/* switch the peripheral rail back on */
+//	stm32_gpiowrite(GPIO_VDD_5V_PERIPH_EN, 0);
+#endif
+
 #if defined(CONFIG_ARCH_BOARD_PX4FMU_V4)
 
 	if (ms < 1) {
@@ -3065,7 +3208,7 @@ fmu_new_mode(PortMode new_mode)
 		/* select 4-pin PWM mode */
 		servo_mode = PX4FMU::MODE_4PWM;
 #endif
-#if defined(CONFIG_ARCH_BOARD_PX4FMU_V2) ||  defined(CONFIG_ARCH_BOARD_PX4FMU_V4)  ||  defined(CONFIG_ARCH_BOARD_PX4FMU_V5)\
+#if defined(CONFIG_ARCH_BOARD_PX4FMU_V2) ||  defined(CONFIG_ARCH_BOARD_PX4FMU_V4)  ||  defined(CONFIG_ARCH_BOARD_PX4FMU_V5)  ||  defined(CONFIG_ARCH_BOARD_PX4FMU_V6)\
 	||  defined(CONFIG_ARCH_BOARD_MINDPX_V2)
 		servo_mode = PX4FMU::MODE_6PWM;
 #endif
@@ -3077,7 +3220,7 @@ fmu_new_mode(PortMode new_mode)
 #endif
 		break;
 
-#if defined(CONFIG_ARCH_BOARD_PX4FMU_V2) ||  defined(CONFIG_ARCH_BOARD_PX4FMU_V4)  ||  defined(CONFIG_ARCH_BOARD_PX4FMU_V5)\
+#if defined(CONFIG_ARCH_BOARD_PX4FMU_V2) ||  defined(CONFIG_ARCH_BOARD_PX4FMU_V4)  ||  defined(CONFIG_ARCH_BOARD_PX4FMU_V5)  ||  defined(CONFIG_ARCH_BOARD_PX4FMU_V6)\
 	|| defined(CONFIG_ARCH_BOARD_MINDPX_V2)
 
 	case PORT_PWM4:
@@ -3511,7 +3654,7 @@ fmu_main(int argc, char *argv[])
 	} else if (!strcmp(verb, "mode_pwm")) {
 		new_mode = PORT_FULL_PWM;
 
-#if defined(CONFIG_ARCH_BOARD_PX4FMU_V2) ||  defined(CONFIG_ARCH_BOARD_PX4FMU_V4)  ||  defined(CONFIG_ARCH_BOARD_PX4FMU_V5)\
+#if defined(CONFIG_ARCH_BOARD_PX4FMU_V2) ||  defined(CONFIG_ARCH_BOARD_PX4FMU_V4)  ||  defined(CONFIG_ARCH_BOARD_PX4FMU_V5)  ||  defined(CONFIG_ARCH_BOARD_PX4FMU_V6)\
 	||  defined(CONFIG_ARCH_BOARD_MINDPX_V2)
 
 	} else if (!strcmp(verb, "mode_pwm4")) {
@@ -3611,7 +3754,7 @@ fmu_main(int argc, char *argv[])
 #if defined(CONFIG_ARCH_BOARD_PX4FMU_V1)
 	fprintf(stderr,
 		"  mode_gpio, mode_serial, mode_pwm, mode_gpio_serial, mode_pwm_serial, mode_pwm_gpio, test, fake, sensor_reset, id\n");
-#elif defined(CONFIG_ARCH_BOARD_PX4FMU_V2) || defined(CONFIG_ARCH_BOARD_PX4FMU_V4)   || defined(CONFIG_ARCH_BOARD_PX4FMU_V5) || defined(CONFIG_ARCH_BOARD_AEROCORE) \
+#elif defined(CONFIG_ARCH_BOARD_PX4FMU_V2) || defined(CONFIG_ARCH_BOARD_PX4FMU_V4)   || defined(CONFIG_ARCH_BOARD_PX4FMU_V5) || defined(CONFIG_ARCH_BOARD_PX4FMU_V6) || defined(CONFIG_ARCH_BOARD_AEROCORE) \
 	|| defined(CONFIG_ARCH_BOARD_MINDPX_V2)
 	fprintf(stderr, "  mode_gpio, mode_pwm, mode_pwm4, test, sensor_reset [milliseconds], i2c <bus> <hz>\n");
 #elif defined(CONFIG_ARCH_BOARD_VRBRAIN_V51) || defined(CONFIG_ARCH_BOARD_VRBRAIN_V52) || defined(CONFIG_ARCH_BOARD_VRBRAIN_V54) || defined(CONFIG_ARCH_BOARD_VRCORE_V10) || defined(CONFIG_ARCH_BOARD_VRUBRAIN_V51) || defined(CONFIG_ARCH_BOARD_VRUBRAIN_V52)
