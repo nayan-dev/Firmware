@@ -209,6 +209,9 @@
 #define GPIO_UART4_RX	GPIO_UART4_RX_1
 #define GPIO_UART4_TX	GPIO_UART4_TX_1
 
+#define GPIO_USART6_RX	GPIO_USART6_RX_1
+#define GPIO_USART6_TX	GPIO_USART6_TX_1
+
 /* UART8 has no alternate pin config */
 
 /* UART RX DMA configurations */
