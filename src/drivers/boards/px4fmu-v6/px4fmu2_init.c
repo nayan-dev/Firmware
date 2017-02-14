@@ -248,7 +248,7 @@ __EXPORT int nsh_archinitialize(void)
 	stm32_configgpio(GPIO_GPIO2_OUTPUT);
 	stm32_configgpio(GPIO_GPIO3_OUTPUT);
 	stm32_configgpio(GPIO_GPIO4_OUTPUT);
-	stm32_configgpio(GPIO_GPIO5_OUTPUT);
+//	stm32_configgpio(GPIO_GPIO5_OUTPUT);
 
 	/* configure the high-resolution time/callout interface */
 	hrt_init();
@@ -299,7 +299,7 @@ __EXPORT int nsh_archinitialize(void)
 //	SPI_SELECT(spi1, PX4_SPIDEV_GYRO, false);
 //	SPI_SELECT(spi1, PX4_SPIDEV_ACCEL_MAG, false);
 //	SPI_SELECT(spi1, PX4_SPIDEV_BARO, false);
-	SPI_SELECT(spi1, PX4_SPIDEV_MPU, false);
+//	SPI_SELECT(spi1, PX4_SPIDEV_MPU, false);
 	up_udelay(20);
 
 	/* Get the SPI port for the FRAM */
@@ -319,7 +319,7 @@ __EXPORT int nsh_archinitialize(void)
 	SPI_SETFREQUENCY(spi2, 12 * 1000 * 1000);
 	SPI_SETBITS(spi2, 8);
 	SPI_SETMODE(spi2, SPIDEV_MODE3);
-//	SPI_SELECT(spi2, SPIDEV_FLASH, false);
+	SPI_SELECT(spi2, PX4_SPIDEV_MPU, false);
 
 	spi4 = up_spiinitialize(4);
 
@@ -329,7 +329,7 @@ __EXPORT int nsh_archinitialize(void)
 	SPI_SETMODE(spi4, SPIDEV_MODE3);
 //	SPI_SELECT(spi4, PX4_SPIDEV_EXT0, false);
 //	SPI_SELECT(spi4, PX4_SPIDEV_EXT1, false);
-	SPI_SELECT(spi4, PX4_SPIDEV_BARO, false);
+//	SPI_SELECT(spi4, PX4_SPIDEV_BARO, false);
 	SPI_SELECT(spi4, SPIDEV_FLASH, false);
 
 #ifdef CONFIG_MMCSD
