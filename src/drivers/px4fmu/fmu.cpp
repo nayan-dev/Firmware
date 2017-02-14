@@ -335,7 +335,7 @@ const PX4FMU::GPIOConfig PX4FMU::_gpio_tab[] = {
 	{GPIO_GPIO2_INPUT,       GPIO_GPIO2_OUTPUT,       0},
 	{GPIO_GPIO3_INPUT,       GPIO_GPIO3_OUTPUT,       0},
 	{GPIO_GPIO4_INPUT,       GPIO_GPIO4_OUTPUT,       0},
-	{GPIO_GPIO5_INPUT,       GPIO_GPIO5_OUTPUT,       0},
+//	{GPIO_GPIO5_INPUT,       GPIO_GPIO5_OUTPUT,       0},
 
 //	{0,                      GPIO_VDD_5V_PERIPH_EN,   0},
 //	{0,                      GPIO_VDD_3V3_SENSORS_EN, 0},
@@ -2624,12 +2624,12 @@ PX4FMU::sensor_reset(int ms)
 	/* disable SPI bus */
 //	stm32_configgpio(GPIO_SPI_CS_GYRO_OFF);
 //	stm32_configgpio(GPIO_SPI_CS_ACCEL_MAG_OFF);
-	stm32_configgpio(GPIO_SPI_CS_BARO_OFF);
+//	stm32_configgpio(GPIO_SPI_CS_BARO_OFF);
 	stm32_configgpio(GPIO_SPI_CS_MPU_OFF);
 
 //	stm32_gpiowrite(GPIO_SPI_CS_GYRO_OFF, 0);
 //	stm32_gpiowrite(GPIO_SPI_CS_ACCEL_MAG_OFF, 0);
-	stm32_gpiowrite(GPIO_SPI_CS_BARO_OFF, 0);
+//	stm32_gpiowrite(GPIO_SPI_CS_BARO_OFF, 0);
 	stm32_gpiowrite(GPIO_SPI_CS_MPU_OFF, 0);
 
 	stm32_configgpio(GPIO_SPI1_SCK_OFF);
@@ -2697,7 +2697,7 @@ PX4FMU::sensor_reset(int ms)
 #ifdef CONFIG_STM32_SPI4
 //	stm32_configgpio(GPIO_SPI_CS_GYRO);
 //	stm32_configgpio(GPIO_SPI_CS_ACCEL_MAG);
-	stm32_configgpio(GPIO_SPI_CS_BARO);
+//	stm32_configgpio(GPIO_SPI_CS_BARO);
 //	stm32_configgpio(GPIO_SPI_CS_MPU);
 
 	/* De-activate all peripherals,
@@ -2706,12 +2706,12 @@ PX4FMU::sensor_reset(int ms)
 //	 */
 //	stm32_gpiowrite(GPIO_SPI_CS_GYRO, 1);
 //	stm32_gpiowrite(GPIO_SPI_CS_ACCEL_MAG, 1);
-	stm32_gpiowrite(GPIO_SPI_CS_BARO, 1);
+//	stm32_gpiowrite(GPIO_SPI_CS_BARO, 1);
 //	stm32_gpiowrite(GPIO_SPI_CS_MPU, 1);
 
-	stm32_configgpio(GPIO_SPI4_SCK);
-	stm32_configgpio(GPIO_SPI4_MISO);
-	stm32_configgpio(GPIO_SPI4_MOSI);
+//	stm32_configgpio(GPIO_SPI4_SCK);
+//	stm32_configgpio(GPIO_SPI4_MISO);
+//	stm32_configgpio(GPIO_SPI4_MOSI);
 
 	// // XXX bring up the EXTI pins again
 	// stm32_configgpio(GPIO_GYRO_DRDY);
