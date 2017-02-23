@@ -74,11 +74,22 @@ $(FIRMWARES): $(BUILD_DIR)%.build/firmware.px4:	generateuorbtopicheaders checksu
 # This is a pretty vile hack, since it hard-codes knowledge of the FMU->IO dependency
 # and forces the _default config in all cases. There has to be a better way to do this...
 #
+ifneq ($(findstring sparrow, $(MAKECMDGOALS)),)
+FMU_VERSION		 = $(patsubst sparrow-%,%,$(word 1, $(subst _, ,$(1))))
+endif
+ifneq ($(findstring px4, $(MAKECMDGOALS)),)
 FMU_VERSION		 = $(patsubst px4fmu-%,%,$(word 1, $(subst _, ,$(1))))
+endif
+
 define FMU_DEP
 $(BUILD_DIR)$(1).build/firmware.px4: $(IMAGE_DIR)px4io-$(call FMU_VERSION,$(1))_default.px4
 endef
+ifneq ($(findstring sparrow, $(MAKECMDGOALS)),)
+FMU_CONFIGS		:= $(filter sparrow%,$(CONFIGS))
+endif
+ifneq ($(findstring px4, $(MAKECMDGOALS)),)
 FMU_CONFIGS		:= $(filter px4fmu%,$(CONFIGS))
+endif
 $(foreach config,$(FMU_CONFIGS),$(eval $(call FMU_DEP,$(config))))
 
 #

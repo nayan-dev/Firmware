@@ -1,10 +1,10 @@
 {
     "board_id": 9, 
-    "magic": "PX4FWv6", 
-    "description": "Firmware for the PX4FMUv6 board", 
+    "magic": "SparrowFWv10", 
+    "description": "Firmware for the SparrowFWv10 board", 
     "image": "", 
     "build_time": 0, 
-    "summary": "PX4FMUv6",
+    "summary": "SparrowFWv10",
     "version": "0.1",
     "image_size": 0,
     "git_identity": "",
