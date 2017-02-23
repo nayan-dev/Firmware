@@ -1741,7 +1741,7 @@ PX4IO::io_get_status()
 	io_handle_vservo(regs[4], regs[5]);
 #endif
 
-#ifdef CONFIG_ARCH_BOARD_PX4FMU_V5
+#ifdef CONFIG_ARCH_BOARD_PX4SPARROW_V10
 //	io_handle_vservo(regs[4], regs[5]);
 #endif
 
@@ -2051,7 +2051,7 @@ PX4IO::print_debug()
 
 #endif
 
-#ifdef CONFIG_ARCH_BOARD_PX4FMU_V5
+#ifdef CONFIG_ARCH_BOARD_PX4SPARROW_V10
 //	int io_fd = -1;
 //
 //	if (io_fd <= 0) {
@@ -2393,7 +2393,7 @@ PX4IO::print_status(bool extended_status)
 	       io_reg_get(PX4IO_PAGE_SETUP, PX4IO_P_SETUP_SBUS_RATE),
 	       io_reg_get(PX4IO_PAGE_SETUP, PX4IO_P_SETUP_IGNORE_SAFETY));
 #endif
-#ifdef CONFIG_ARCH_BOARD_PX4FMU_V5
+#ifdef CONFIG_ARCH_BOARD_PX4SPARROW_V10
 //	printf("rates 0x%04x default %u alt %u sbus %u\n",
 //	       io_reg_get(PX4IO_PAGE_SETUP, PX4IO_P_SETUP_PWM_RATES),
 //	       io_reg_get(PX4IO_PAGE_SETUP, PX4IO_P_SETUP_PWM_DEFAULTRATE),
@@ -2791,7 +2791,7 @@ PX4IO::ioctl(file *filep, int cmd, unsigned long arg)
 #ifdef CONFIG_ARCH_BOARD_PX4FMU_V2
 			ret = -EINVAL;
 #endif
-#ifdef CONFIG_ARCH_BOARD_PX4FMU_V5
+#ifdef CONFIG_ARCH_BOARD_PX4SPARROW_V10
 //			ret = -EINVAL;
 #endif
 			break;
@@ -2812,7 +2812,7 @@ PX4IO::ioctl(file *filep, int cmd, unsigned long arg)
 #ifdef CONFIG_ARCH_BOARD_PX4FMU_V2
 		ret = -EINVAL;
 #endif
-#ifdef CONFIG_ARCH_BOARD_PX4FMU_V5
+#ifdef CONFIG_ARCH_BOARD_PX4SPARROW_V10
 //		ret = -EINVAL;
 #endif
 		break;
@@ -2832,7 +2832,7 @@ PX4IO::ioctl(file *filep, int cmd, unsigned long arg)
 #ifdef CONFIG_ARCH_BOARD_PX4FMU_V2
 		ret = -EINVAL;
 #endif
-#ifdef CONFIG_ARCH_BOARD_PX4FMU_V5
+#ifdef CONFIG_ARCH_BOARD_PX4SPARROW_V10
 //		ret = -EINVAL;
 #endif
 		break;
@@ -2849,7 +2849,7 @@ PX4IO::ioctl(file *filep, int cmd, unsigned long arg)
 #ifdef CONFIG_ARCH_BOARD_PX4FMU_V2
 		ret = -EINVAL;
 #endif
-#ifdef CONFIG_ARCH_BOARD_PX4FMU_V5
+#ifdef CONFIG_ARCH_BOARD_PX4SPARROW_V10
 //		ret = -EINVAL;
 #endif
 		break;
@@ -3617,7 +3617,7 @@ px4io_main(int argc, char *argv[])
 			fn[2] =	"/fs/microsd/px4io.bin";
 			fn[3] =	nullptr;
 
-#elif defined(CONFIG_ARCH_BOARD_PX4FMU_V5)
+#elif defined(CONFIG_ARCH_BOARD_PX4SPARROW_V10)
 //			fn[0] = "/etc/extras/px4io-v2.bin";
 //			fn[1] =	"/fs/microsd/px4io2.bin";
 //			fn[2] =	"/fs/microsd/px4io.bin";
