@@ -6,6 +6,6 @@
 # Configure the toolchain
 #
 CONFIG_ARCH			 = CORTEXM4F
-CONFIG_BOARD			 = PX4FMU_V5
+CONFIG_BOARD			 = PX4SPARROW_V10
 
 include $(PX4_MK_DIR)/toolchain_gnu-arm-eabi.mk
