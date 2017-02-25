@@ -41,12 +41,15 @@
 #include "gnss.hpp"
 #include "mag.hpp"
 #include "baro.hpp"
+#include "airspeed.hpp"
 
 /*
  * IUavcanSensorBridge
  */
 void IUavcanSensorBridge::make_all(uavcan::INode &node, List<IUavcanSensorBridge *> &list)
 {
+
+	list.add(new UavcanAirspeedBridge(node));
 	list.add(new UavcanBarometerBridge(node));
 	list.add(new UavcanMagnetometerBridge(node));
 	list.add(new UavcanGnssBridge(node));
