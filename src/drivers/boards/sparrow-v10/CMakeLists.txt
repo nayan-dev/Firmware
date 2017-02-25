@@ -31,7 +31,7 @@
 #
 ############################################################################
 px4_add_module(
-	MODULE drivers__boards__sparrow-v11
+	MODULE drivers__boards__sparrow-v10
 	COMPILE_FLAGS
 		-Os
 	SRCS

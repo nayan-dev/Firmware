@@ -51,6 +51,7 @@ SRCS += actuators/esc.cpp \
 
 # Sensors
 SRCS += sensors/sensor_bridge.cpp   \
+        sensors/airspeed.cpp 		\
         sensors/gnss.cpp            \
         sensors/mag.cpp             \
         sensors/baro.cpp
@@ -75,10 +76,10 @@ SRCS += $(subst  $(PX4_MODULE_SRC),../../,$(LIBUAVCAN_STM32_SRC))
 INCLUDE_DIRS += $(LIBUAVCAN_STM32_INC)  $(UAVCAN_DIR)/libuavcan/include  $(UAVCAN_DIR)/libuavcan/include/dsdlc_generated  
 INCLUDE_DIRS += $(UAVCAN_DIR)/libuavcan_drivers/posix/include  $(UAVCAN_DIR)/libuavcan_drivers/stm32/driver/include
 INCLUDE_DIRS += $(MAVLINK_DIR)/include
-
-override EXTRADEFINES := $(EXTRADEFINES) -DUAVCAN_STM32_NUTTX -DUAVCAN_STM32_NUM_IFACES=2 \
+UAVCAN_STM32_NUM_IFACES ?= 2
+override EXTRADEFINES := $(EXTRADEFINES) -DUAVCAN_STM32_NUTTX \
                 -DUAVCAN_CPP_VERSION=UAVCAN_CPP03 -DUAVCAN_MEM_POOL_BLOCK_SIZE=48 \
-                -DUAVCAN_NO_ASSERTIONS -DUAVCAN_PLATFORM=stm32 \
+                -DUAVCAN_NO_ASSERTIONS -DUAVCAN_PLATFORM=stm32 -DUAVCAN_STM32_NUM_IFACES=$(UAVCAN_STM32_NUM_IFACES)\
                 -DUAVCAN_STM32_${OS_UPPER}=1 -DUAVCAN_STM32_TIMER_NUMBER=5
 
 #
