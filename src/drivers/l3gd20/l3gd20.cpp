@@ -190,7 +190,7 @@ static const int ERROR = -1;
 #endif
 
 #ifndef SENSOR_BOARD_ROTATION_DEFAULT
-#define SENSOR_BOARD_ROTATION_DEFAULT		SENSOR_BOARD_ROTATION_270_DEG
+#define SENSOR_BOARD_ROTATION_DEFAULT		SENSOR_BOARD_ROTATION_000_DEG
 #endif
 
 /*
@@ -1274,7 +1274,7 @@ start(bool external_bus, enum Rotation rotation)
 #endif
 
 	} else {
-		g_dev = new L3GD20(PX4_SPI_BUS_SENSORS, L3GD20_DEVICE_PATH, (spi_dev_e)PX4_SPIDEV_GYRO, rotation);
+		g_dev = new L3GD20(PX4_SPI_BUS_LSM9DS0, L3GD20_DEVICE_PATH, (spi_dev_e)PX4_SPIDEV_LSM9DS0_G, rotation);
 	}
 
 	if (g_dev == nullptr) {

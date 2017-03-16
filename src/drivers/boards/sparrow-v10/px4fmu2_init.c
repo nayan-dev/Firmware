@@ -316,10 +316,13 @@ __EXPORT int nsh_archinitialize(void)
 	 * and de-assert the known chip selects. */
 
 	// XXX start with 10.4 MHz in FRAM usage and go up to 37.5 once validated
-	SPI_SETFREQUENCY(spi2, 12 * 1000 * 1000);
+	SPI_SETFREQUENCY(spi2, 10 * 1000 * 1000);
 	SPI_SETBITS(spi2, 8);
 	SPI_SETMODE(spi2, SPIDEV_MODE3);
 //	SPI_SELECT(spi2, SPIDEV_FLASH, false);
+	SPI_SELECT(spi2, PX4_SPIDEV_LSM9DS0_G, false);
+	SPI_SELECT(spi2, PX4_SPIDEV_LSM9DS0_XM, false);
+	up_udelay(20);
 
 	spi4 = up_spiinitialize(4);
 
