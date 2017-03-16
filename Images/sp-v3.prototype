@@ -1,10 +1,10 @@
 {
     "board_id": 9, 
-    "magic": "SparrowFWv11", 
-    "description": "Firmware for the Sparrow V11 board", 
+    "magic": "Sparrowv3FW", 
+    "description": "Firmware for the Sparrow V3 board", 
     "image": "", 
     "build_time": 0, 
-    "summary": "SparrowFWv11",
+    "summary": "Sparrowv3FW",
     "version": "0.1",
     "image_size": 0,
     "git_identity": "",

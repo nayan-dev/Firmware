@@ -89,7 +89,7 @@ int gpio_led_main(int argc, char *argv[])
 		     "\t\tr2\tPX4IO RELAY2"
 		    );
 #endif
-#if defined(CONFIG_ARCH_BOARD_PX4FMU_V2) || defined(CONFIG_ARCH_BOARD_PX4FMU_V4) || defined(CONFIG_ARCH_BOARD_PX4SPARROW_V10) || defined(CONFIG_ARCH_BOARD_PX4SPARROW_V11) \
+#if defined(CONFIG_ARCH_BOARD_PX4FMU_V2) || defined(CONFIG_ARCH_BOARD_PX4FMU_V4) || defined(CONFIG_ARCH_BOARD_PX4SPARROW_V10) || defined(CONFIG_ARCH_BOARD_SP_V3) \
 	|| defined(CONFIG_ARCH_BOARD_MINDPX_V2)
 		errx(1, "usage: gpio_led {start|stop} [-p <n>]\n"
 		     "\t-p <n>\tUse specified AUX OUT pin number (default: 1)"
@@ -112,7 +112,7 @@ int gpio_led_main(int argc, char *argv[])
 #ifdef CONFIG_ARCH_BOARD_PX4FMU_V1
 			char *pin_name = "PX4FMU GPIO_EXT1";
 #endif
-#if defined(CONFIG_ARCH_BOARD_PX4FMU_V2) || defined(CONFIG_ARCH_BOARD_PX4FMU_V4) || defined(CONFIG_ARCH_BOARD_PX4SPARROW_V10) || defined(CONFIG_ARCH_BOARD_PX4SPARROW_V11) \
+#if defined(CONFIG_ARCH_BOARD_PX4FMU_V2) || defined(CONFIG_ARCH_BOARD_PX4FMU_V4) || defined(CONFIG_ARCH_BOARD_PX4SPARROW_V10) || defined(CONFIG_ARCH_BOARD_SP_V3) \
 	|| defined(CONFIG_ARCH_BOARD_MINDPX_V2)
 			char pin_name[] = "AUX OUT 1";
 #endif
@@ -156,7 +156,7 @@ int gpio_led_main(int argc, char *argv[])
 					}
 
 #endif
-#if defined(CONFIG_ARCH_BOARD_PX4FMU_V2) || defined(CONFIG_ARCH_BOARD_PX4FMU_V4)  || defined(CONFIG_ARCH_BOARD_PX4SPARROW_V10) || defined(CONFIG_ARCH_BOARD_PX4SPARROW_V11)\
+#if defined(CONFIG_ARCH_BOARD_PX4FMU_V2) || defined(CONFIG_ARCH_BOARD_PX4FMU_V4)  || defined(CONFIG_ARCH_BOARD_PX4SPARROW_V10) || defined(CONFIG_ARCH_BOARD_SP_V3)\
 	|| defined(CONFIG_ARCH_BOARD_MINDPX_V2)
 					unsigned int n = strtoul(argv[3], NULL, 10);
 
