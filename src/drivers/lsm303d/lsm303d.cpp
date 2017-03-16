@@ -1980,7 +1980,7 @@ start(bool external_bus, enum Rotation rotation, unsigned range)
 #endif
 
 	} else {
-		g_dev = new LSM303D(PX4_SPI_BUS_SENSORS, LSM303D_DEVICE_PATH_ACCEL, (spi_dev_e)PX4_SPIDEV_ACCEL_MAG, rotation);
+		g_dev = new LSM303D(PX4_SPI_BUS_LSM9DS0, LSM303D_DEVICE_PATH_ACCEL, (spi_dev_e)PX4_SPIDEV_LSM9DS0_XM, rotation);
 	}
 
 	if (g_dev == nullptr) {
