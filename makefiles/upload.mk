@@ -33,7 +33,7 @@ upload-serial-px4fmu-v2:	$(BUNDLE) $(UPLOADER)
 upload-serial-sparrow-v10:	$(BUNDLE) $(UPLOADER)
 	$(Q) $(PYTHON) -u $(UPLOADER) --port $(SERIAL_PORTS) $(BUNDLE)
 	
-upload-serial-sparrow-v11:	$(BUNDLE) $(UPLOADER)
+upload-serial-sp-v3:	$(BUNDLE) $(UPLOADER)
 	$(Q) $(PYTHON) -u $(UPLOADER) --port $(SERIAL_PORTS) $(BUNDLE)		
 
 upload-serial-px4fmu-v3:	$(BUNDLE) $(UPLOADER)

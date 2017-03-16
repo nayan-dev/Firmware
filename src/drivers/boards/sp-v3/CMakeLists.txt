@@ -31,16 +31,16 @@
 #
 ############################################################################
 px4_add_module(
-	MODULE drivers__boards__sparrow-v11
+	MODULE drivers__boards__sp-v3
 	COMPILE_FLAGS
 		-Os
 	SRCS
-		px4fmu_can.c
-		px4fmu2_init.c
-		px4fmu_timer_config.c
-		px4fmu_spi.c
-		px4fmu_usb.c
-		px4fmu2_led.c
+		spv3_can.c
+		spv3_init.c
+		spv3_timer_config.c
+		spv3_spi.c
+		spv3_usb.c
+		spv3_led.c
 	DEPENDS
 		platforms__common
 	)
