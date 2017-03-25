@@ -250,6 +250,10 @@ __EXPORT int nsh_archinitialize(void)
 	stm32_configgpio(GPIO_GPIO4_OUTPUT);
 	stm32_configgpio(GPIO_GPIO5_OUTPUT);
 	stm32_configgpio(GPIO_GPIO6_OUTPUT);
+
+	stm32_configgpio(GPIO_GPIO10_INPUT);
+	stm32_configgpio(GPIO_GPIO11_INPUT);
+	stm32_configgpio(GPIO_GPIO12_INPUT);
 //	stm32_configgpio(GPIO_GPIO5_OUTPUT);
 
 	/* configure the high-resolution time/callout interface */
