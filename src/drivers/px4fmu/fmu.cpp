@@ -981,7 +981,7 @@ PX4FMU::cycle()
 		// assume SBUS input
 		sbus_config(_rcs_fd, false);
 		// disable CPPM input by mapping it away from the timer capture input
-//		stm32_unconfiggpio(GPIO_PPM_IN);//nik
+		stm32_unconfiggpio(GPIO_PPM_IN);
 #endif
 
 		_initialized = true;
