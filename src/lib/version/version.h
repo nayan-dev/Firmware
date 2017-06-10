@@ -51,7 +51,7 @@
 #define	HW_ARCH "PX4FMU_V2"
 #endif
 
-#ifdef CONFIG_ARCH_BOARD_PX4SPARROW_V10
+#ifdef CONFIG_ARCH_BOARD_SPARROW_V10
 #define	HW_ARCH "PX4FMU_V5"
 #endif
 
