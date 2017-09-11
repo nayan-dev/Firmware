@@ -250,6 +250,11 @@ __EXPORT int nsh_archinitialize(void)
 	stm32_configgpio(GPIO_GPIO4_OUTPUT);
 	stm32_configgpio(GPIO_GPIO5_OUTPUT);
 	stm32_configgpio(GPIO_GPIO6_OUTPUT);
+	stm32_configgpio(GPIO_GPIO8_OUTPUT);
+	stm32_configgpio(GPIO_GPIO9_OUTPUT);
+	stm32_configgpio(GPIO_GPIO10_INPUT);
+	stm32_configgpio(GPIO_GPIO11_INPUT);
+	stm32_configgpio(GPIO_GPIO12_INPUT);
 //	stm32_configgpio(GPIO_GPIO5_OUTPUT);
 
 	/* configure the high-resolution time/callout interface */
@@ -298,6 +303,9 @@ __EXPORT int nsh_archinitialize(void)
 	SPI_SETFREQUENCY(spi1, 10000000);
 	SPI_SETBITS(spi1, 8);
 	SPI_SETMODE(spi1, SPIDEV_MODE3);
+	SPI_SELECT(spi1, PX4_SPIDEV_LSM9DS0_G, false);
+	SPI_SELECT(spi1, PX4_SPIDEV_LSM9DS0_XM, false);
+
 //	SPI_SELECT(spi1, PX4_SPIDEV_GYRO, false);
 //	SPI_SELECT(spi1, PX4_SPIDEV_ACCEL_MAG, false);
 //	SPI_SELECT(spi1, PX4_SPIDEV_BARO, false);
