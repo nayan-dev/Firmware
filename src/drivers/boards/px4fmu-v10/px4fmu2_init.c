@@ -299,7 +299,7 @@ __EXPORT int nsh_archinitialize(void)
 //	SPI_SELECT(spi1, PX4_SPIDEV_GYRO, false);
 //	SPI_SELECT(spi1, PX4_SPIDEV_ACCEL_MAG, false);
 //	SPI_SELECT(spi1, PX4_SPIDEV_BARO, false);
-	SPI_SELECT(spi1, PX4_SPIDEV_MPU, false);
+//	SPI_SELECT(spi1, PX4_SPIDEV_MPU, false);
 	up_udelay(20);
 
 	/* Get the SPI port for the FRAM */
@@ -320,6 +320,9 @@ __EXPORT int nsh_archinitialize(void)
 	SPI_SETBITS(spi2, 8);
 	SPI_SETMODE(spi2, SPIDEV_MODE3);
 //	SPI_SELECT(spi2, SPIDEV_FLASH, false);
+	SPI_SELECT(spi2, PX4_SPIDEV_MPU, false);
+	SPI_SELECT(spi2, PX4_SPIDEV_BARO, false);
+	up_udelay(20);
 
 	spi4 = up_spiinitialize(4);
 
@@ -329,8 +332,9 @@ __EXPORT int nsh_archinitialize(void)
 	SPI_SETMODE(spi4, SPIDEV_MODE3);
 //	SPI_SELECT(spi4, PX4_SPIDEV_EXT0, false);
 //	SPI_SELECT(spi4, PX4_SPIDEV_EXT1, false);
-	SPI_SELECT(spi4, PX4_SPIDEV_BARO, false);
+//	SPI_SELECT(spi4, PX4_SPIDEV_BARO, false);
 	SPI_SELECT(spi4, SPIDEV_FLASH, false);
+	up_udelay(20);
 
 #ifdef CONFIG_MMCSD
 	/* First, get an instance of the SDIO interface */
