@@ -274,16 +274,20 @@
 #define GPIO_SPI4_SCK	(GPIO_SPI4_SCK_1|GPIO_SPEED_50MHz)
 
 
-/*
+
 #ifdef CONFIG_STM32_SPI_DMA
 
-  only enable DMA on the sensor bus for now. We don't have enough
-  spare DMA channels for the other sensors at the moment
+//  only enable DMA on the sensor bus for now. We don't have enough
+//  spare DMA channels for the other sensors at the moment
 
 # define DMACHAN_SPI1_RX DMAMAP_SPI1_RX_1
 # define DMACHAN_SPI1_TX DMAMAP_SPI1_TX_1
+# define DMACHAN_SPI2_RX DMAMAP_SPI2_RX
+# define DMACHAN_SPI2_TX DMAMAP_SPI2_TX
+# define DMACHAN_SPI4_RX DMAMAP_SPI4_RX_2
+# define DMACHAN_SPI4_TX DMAMAP_SPI4_TX_2
 #endif
-*/
+
 
 /************************************************************************************
  * Public Data

@@ -2831,6 +2831,14 @@ PX4FMU::sensor_reset(int ms)
 	stm32_gpiowrite(GPIO_SPI1_MISO_OFF, 0);
 	stm32_gpiowrite(GPIO_SPI1_MOSI_OFF, 0);
 
+	stm32_configgpio(GPIO_SPI2_SCK_OFF);
+	stm32_configgpio(GPIO_SPI2_MISO_OFF);
+	stm32_configgpio(GPIO_SPI2_MOSI_OFF);
+
+	stm32_gpiowrite(GPIO_SPI2_SCK_OFF, 0);
+	stm32_gpiowrite(GPIO_SPI2_MISO_OFF, 0);
+	stm32_gpiowrite(GPIO_SPI2_MOSI_OFF, 0);
+
 //	stm32_configgpio(GPIO_GYRO_DRDY_OFF);
 //	stm32_configgpio(GPIO_MAG_DRDY_OFF);
 //	stm32_configgpio(GPIO_ACCEL_DRDY_OFF);
@@ -2858,10 +2866,10 @@ PX4FMU::sensor_reset(int ms)
 	usleep(100);
 
 	/* reconfigure the SPI pins */
-#ifdef CONFIG_STM32_SPI1
+#ifdef CONFIG_STM32_SPI2
 //	stm32_configgpio(GPIO_SPI_CS_GYRO);
 //	stm32_configgpio(GPIO_SPI_CS_ACCEL_MAG);
-//	stm32_configgpio(GPIO_SPI_CS_BARO);
+	stm32_configgpio(GPIO_SPI_CS_BARO);
 	stm32_configgpio(GPIO_SPI_CS_MPU);
 
 	/* De-activate all peripherals,
@@ -2870,12 +2878,12 @@ PX4FMU::sensor_reset(int ms)
 //	 */
 //	stm32_gpiowrite(GPIO_SPI_CS_GYRO, 1);
 //	stm32_gpiowrite(GPIO_SPI_CS_ACCEL_MAG, 1);
-//	stm32_gpiowrite(GPIO_SPI_CS_BARO, 1);
+	stm32_gpiowrite(GPIO_SPI_CS_BARO, 1);
 	stm32_gpiowrite(GPIO_SPI_CS_MPU, 1);
 
-	stm32_configgpio(GPIO_SPI1_SCK);
-	stm32_configgpio(GPIO_SPI1_MISO);
-	stm32_configgpio(GPIO_SPI1_MOSI);
+	stm32_configgpio(GPIO_SPI2_SCK);
+	stm32_configgpio(GPIO_SPI2_MISO);
+	stm32_configgpio(GPIO_SPI2_MOSI);
 
 	// // XXX bring up the EXTI pins again
 	// stm32_configgpio(GPIO_GYRO_DRDY);
@@ -2888,7 +2896,7 @@ PX4FMU::sensor_reset(int ms)
 #ifdef CONFIG_STM32_SPI4
 //	stm32_configgpio(GPIO_SPI_CS_GYRO);
 //	stm32_configgpio(GPIO_SPI_CS_ACCEL_MAG);
-	stm32_configgpio(GPIO_SPI_CS_BARO);
+//	stm32_configgpio(GPIO_SPI_CS_BARO);
 //	stm32_configgpio(GPIO_SPI_CS_MPU);
 
 	/* De-activate all peripherals,
@@ -2897,7 +2905,7 @@ PX4FMU::sensor_reset(int ms)
 //	 */
 //	stm32_gpiowrite(GPIO_SPI_CS_GYRO, 1);
 //	stm32_gpiowrite(GPIO_SPI_CS_ACCEL_MAG, 1);
-	stm32_gpiowrite(GPIO_SPI_CS_BARO, 1);
+//	stm32_gpiowrite(GPIO_SPI_CS_BARO, 1);
 //	stm32_gpiowrite(GPIO_SPI_CS_MPU, 1);
 
 	stm32_configgpio(GPIO_SPI4_SCK);

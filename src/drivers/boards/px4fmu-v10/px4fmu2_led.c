@@ -80,6 +80,10 @@ __EXPORT void led_off(int led)
 	if (led == 1) {
 		/* Pull up to switch off */
 		stm32_gpiowrite(GPIO_LED1, true);
+
+		stm32_gpiowrite(GPIO_EX1, true);
+//		stm32_gpiowrite(GPIO_EX2, true);
+		stm32_gpiowrite(GPIO_EX3, true);
 	}
 }
 
