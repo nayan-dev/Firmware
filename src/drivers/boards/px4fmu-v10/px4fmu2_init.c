@@ -322,8 +322,8 @@ __EXPORT int nsh_archinitialize(void)
 //	SPI_SELECT(spi2, SPIDEV_FLASH, false);
 	SPI_SELECT(spi2, PX4_SPIDEV_MPU, false);
 	SPI_SELECT(spi2, PX4_SPIDEV_BARO, false);
-	SPI_SELECT(spi2, PX4_SPIDEV_LSM9DS0_G, false);
-	SPI_SELECT(spi2, PX4_SPIDEV_LSM9DS0_XM, false);
+	SPI_SELECT(spi2, PX4_SPIDEV_LSM9DS1_AG, false);
+//	SPI_SELECT(spi2, PX4_SPIDEV_LSM9DS0_XM, false);
 	up_udelay(20);
 
 	spi4 = up_spiinitialize(4);
