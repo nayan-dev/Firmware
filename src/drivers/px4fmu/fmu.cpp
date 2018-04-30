@@ -2819,6 +2819,7 @@ PX4FMU::sensor_reset(int ms)
 	stm32_configgpio(GPIO_SPI_CS_MPU_OFF);
 	stm32_configgpio(GPIO_SPI_CS_LSM9DS1_AG_OFF);
 //	stm32_configgpio(GPIO_SPI_CS_LSM9DS0_XM_OFF);
+	stm32_configgpio(GPIO_SPI_CS_BMP280_OFF);
 
 //	stm32_gpiowrite(GPIO_SPI_CS_GYRO_OFF, 0);
 //	stm32_gpiowrite(GPIO_SPI_CS_ACCEL_MAG_OFF, 0);
@@ -2826,6 +2827,7 @@ PX4FMU::sensor_reset(int ms)
 	stm32_gpiowrite(GPIO_SPI_CS_MPU_OFF, 0);
 	stm32_gpiowrite(GPIO_SPI_CS_LSM9DS1_AG_OFF, 0);
 //	stm32_gpiowrite(GPIO_SPI_CS_LSM9DS0_XM_OFF, 0);
+	stm32_gpiowrite(GPIO_SPI_CS_BMP280_OFF, 0);
 
 	stm32_configgpio(GPIO_SPI1_SCK_OFF);
 	stm32_configgpio(GPIO_SPI1_MISO_OFF);
@@ -2888,6 +2890,7 @@ PX4FMU::sensor_reset(int ms)
 	stm32_gpiowrite(GPIO_SPI_CS_MPU, 1);
 	stm32_gpiowrite(GPIO_SPI_CS_LSM9DS1_AG, 1);
 //	stm32_gpiowrite(GPIO_SPI_CS_LSM9DS0_XM, 1);
+	stm32_gpiowrite(GPIO_SPI_CS_BMP280, 1);
 
 	stm32_configgpio(GPIO_SPI2_SCK);
 	stm32_configgpio(GPIO_SPI2_MISO);

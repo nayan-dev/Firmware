@@ -99,6 +99,7 @@ __EXPORT void stm32_spiinitialize(void)
 	//	stm32_configgpio(GPIO_SPI_CS_HMC);
 		stm32_configgpio(GPIO_SPI_CS_MPU);
 		stm32_configgpio(GPIO_SPI_CS_LSM9DS1_AG);
+		stm32_configgpio(GPIO_SPI_CS_BMP280);
 
 		/* De-activate all peripherals,
 		 * required for some peripheral
@@ -110,6 +111,7 @@ __EXPORT void stm32_spiinitialize(void)
 	//	stm32_gpiowrite(GPIO_SPI_CS_HMC, 1);
 		stm32_gpiowrite(GPIO_SPI_CS_MPU, 1);
 		stm32_gpiowrite(GPIO_SPI_CS_LSM9DS1_AG, 1);
+		stm32_gpiowrite(GPIO_SPI_CS_BMP280, 1);
 
 	//	stm32_configgpio(GPIO_EXTI_GYRO_DRDY);
 	//	stm32_configgpio(GPIO_EXTI_MAG_DRDY);
@@ -227,6 +229,7 @@ __EXPORT void stm32_spi2select(FAR struct spi_dev_s *dev, enum spi_dev_e devid, 
 		stm32_gpiowrite(GPIO_SPI_CS_MPU, 1);
 		stm32_gpiowrite(GPIO_SPI_CS_LSM9DS1_AG, 1);
 //		stm32_gpiowrite(GPIO_SPI_CS_LSM9DS0_XM, 1);
+		stm32_gpiowrite(GPIO_SPI_CS_BMP280, 1);
 		break;
 
 //	case PX4_SPIDEV_HMC:
@@ -247,6 +250,7 @@ __EXPORT void stm32_spi2select(FAR struct spi_dev_s *dev, enum spi_dev_e devid, 
 		stm32_gpiowrite(GPIO_SPI_CS_MPU, !selected);
 		stm32_gpiowrite(GPIO_SPI_CS_LSM9DS1_AG, 1);
 //		stm32_gpiowrite(GPIO_SPI_CS_LSM9DS0_XM, 1);
+		stm32_gpiowrite(GPIO_SPI_CS_BMP280, 1);
 		break;
 
 	case PX4_SPIDEV_LSM9DS1_AG:
@@ -258,6 +262,7 @@ __EXPORT void stm32_spi2select(FAR struct spi_dev_s *dev, enum spi_dev_e devid, 
 		stm32_gpiowrite(GPIO_SPI_CS_MPU, 1);
 		stm32_gpiowrite(GPIO_SPI_CS_LSM9DS1_AG, !selected);
 //		stm32_gpiowrite(GPIO_SPI_CS_LSM9DS0_XM, 1);
+		stm32_gpiowrite(GPIO_SPI_CS_BMP280, 1);
 		break;
 
 /*	case PX4_SPIDEV_LSM9DS0_XM:
@@ -270,6 +275,18 @@ __EXPORT void stm32_spi2select(FAR struct spi_dev_s *dev, enum spi_dev_e devid, 
 		stm32_gpiowrite(GPIO_SPI_CS_LSM9DS0_G, 1);
 		stm32_gpiowrite(GPIO_SPI_CS_LSM9DS0_XM, !selected);
 		break;*/
+
+	case PX4_SPIDEV_BMP280:
+		/* Making sure the other peripherals are not selected */
+//		stm32_gpiowrite(GPIO_SPI_CS_GYRO, 1);
+//		stm32_gpiowrite(GPIO_SPI_CS_ACCEL_MAG, 1);
+		stm32_gpiowrite(GPIO_SPI_CS_BARO, 1);
+//		stm32_gpiowrite(GPIO_SPI_CS_HMC, 1);
+		stm32_gpiowrite(GPIO_SPI_CS_MPU, 1);
+		stm32_gpiowrite(GPIO_SPI_CS_LSM9DS1_AG, 1);
+//		stm32_gpiowrite(GPIO_SPI_CS_LSM9DS0_XM, 1);
+		stm32_gpiowrite(GPIO_SPI_CS_BMP280, !selected);
+		break;
 
 	default:
 		break;
